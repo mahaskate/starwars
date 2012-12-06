@@ -37,7 +37,7 @@ function rota($caminho,$redirect = array()){
 
 //função insere todos os css e script
 function coreHead(){
-	$r = "<link rel='stylesheet' href='".root()."garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
+	$r = "<link rel='stylesheet' href='/garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
 	$r .= "<link rel='stylesheet' href='".root()."garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
 	$r .= "<script src='".root()."garagem/js/jquery.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."garagem/js/bootstrap.js' type='text/javascript'></script>";
