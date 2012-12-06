@@ -24,7 +24,7 @@ function root(){
 		$root = explode("/",$root);
 		$root = "/".$root[1];
 	}else{
-		$root = $_SERVER['SERVER_NAME'];
+		$root = "http://".$_SERVER['SERVER_NAME'];
 	}
 	return $root;
 }
