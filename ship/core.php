@@ -2,9 +2,7 @@
 session_start();
 //CONFIGURAÇÕES
 //COLOQUE AQUI A RAIZ
-$root = $_SERVER['PHP_SELF'];
-$root = explode("/", $root);
-$root = "/".$root[1];
+$root = root();
 
 //carrega engine para o crud
 require "crud.php";
@@ -19,6 +17,17 @@ if (!isset($titulo))
 
 //função ROTA
 
+function root(){
+	$conflen=strlen('SCRIPT');
+	$B=substr(__FILE__,0,strrpos(__FILE__,'/'));
+	$A=substr($_SERVER['DOCUMENT_ROOT'], strrpos($_SERVER['DOCUMENT_ROOT'], $_SERVER['PHP_SELF']));
+	$C=substr($B,strlen($A));
+	$posconf=strlen($C)-$conflen-1;
+	$D=substr($C,1,$posconf);
+	$host='http://'.$_SERVER['SERVER_NAME'].'/'.$D;
+	return $host;
+}
+
 function rota($caminho,$redirect = array()){
 	$i = explode("/", $caminho);
 	$i = count($i)-1;
@@ -28,12 +37,11 @@ function rota($caminho,$redirect = array()){
 
 //função insere todos os css e script
 function coreHead(){
-	global $root;
-	$r = "<link rel='stylesheet' href='".$root."/garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
-	$r .= "<link rel='stylesheet' href='".$root."/garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
-	$r .= "<script src='".$root."/garagem/js/jquery.js' type='text/javascript'></script>";
-	$r .= "<script src='".$root."/garagem/js/bootstrap.js' type='text/javascript'></script>";
-	$r .= "<script src='".$root."/garagem/js/core.js' type='text/javascript'></script>";
+	$r = "<link rel='stylesheet' href='".root()."garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
+	$r .= "<link rel='stylesheet' href='".root()."garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
+	$r .= "<script src='".root()."garagem/js/jquery.js' type='text/javascript'></script>";
+	$r .= "<script src='".root()."garagem/js/bootstrap.js' type='text/javascript'></script>";
+	$r .= "<script src='".root()."garagem/js/core.js' type='text/javascript'></script>";
 	return $r;
 }
 
