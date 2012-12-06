@@ -18,14 +18,15 @@ if (!isset($titulo))
 //função ROTA
 
 function root(){
-	$conflen=strlen('SCRIPT');
-	$B=substr(__FILE__,0,strrpos(__FILE__,'/'));
-	$A=substr($_SERVER['DOCUMENT_ROOT'], strrpos($_SERVER['DOCUMENT_ROOT'], $_SERVER['PHP_SELF']));
-	$C=substr($B,strlen($A));
-	$posconf=strlen($C)-$conflen-1;
-	$D=substr($C,1,$posconf);
-	$host='http://'.$_SERVER['SERVER_NAME'].'/'.$D;
-	return $host;
+	$root = $_SERVER['SERVER_NAME'];
+	if ($root == "localhost") {
+		$root = $_SERVER['PHP_SELF'];
+		$root = explode("/",$root);
+		$root = "/".$root[1];
+	}else{
+		$root = $_SERVER['SERVER_NAME'];
+	}
+	return $root;
 }
 
 function rota($caminho,$redirect = array()){
@@ -37,11 +38,11 @@ function rota($caminho,$redirect = array()){
 
 //função insere todos os css e script
 function coreHead(){
-	$r = "<link rel='stylesheet' href='/garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
-	$r .= "<link rel='stylesheet' href='".root()."garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
-	$r .= "<script src='".root()."garagem/js/jquery.js' type='text/javascript'></script>";
-	$r .= "<script src='".root()."garagem/js/bootstrap.js' type='text/javascript'></script>";
-	$r .= "<script src='".root()."garagem/js/core.js' type='text/javascript'></script>";
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
+	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
+	$r .= "<script src='".root()."/garagem/js/jquery.js' type='text/javascript'></script>";
+	$r .= "<script src='".root()."/garagem/js/bootstrap.js' type='text/javascript'></script>";
+	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>";
 	return $r;
 }
 
