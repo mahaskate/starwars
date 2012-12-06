@@ -3,6 +3,6 @@ $var = param(0);
 
 echo "view teste";
 echo "<br>";
-echo "bosta";
+echo $_SERVER['SERVER_NAME'];;
 
 ?>
