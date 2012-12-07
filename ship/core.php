@@ -127,8 +127,7 @@ function a($conteudo,$destino){
 }
 //Inserir imagem
 function img($img){
-	global $root;
-	$r = "<img src='".$root."/garagem/img/".$img."'>";
+	$r = "<img src='".root()."/garagem/img/".$img."'>";
 	return $r;
 }
 

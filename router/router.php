@@ -9,7 +9,6 @@ if (isset($_GET['url'])) {
 	//faz um loop nas rotas se existir alguma redireciona
 	foreach ($rotas as $key => $value) {
 		// Explode URL COMPLETA E PEGA SOH A PARTE SEM APRAMETRO
-		//echo $urlCompleta;
 		$urlCompletaFinal = "";
 		if ($total >= $value['params']) {
 			for ($i=0; $i < $value['params']; $i++) { 
