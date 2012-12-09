@@ -31,7 +31,7 @@ if (isset($_GET['url'])) {
 				require "../mvc/controller/".$rota['action'].".php";
 				if (!isset($layout))
 					$layout = "default";
-				require "../mvc/view/layout/".$layout.".php";
+				require "../mvc/view/layout/".$layout.".war";
 				exit();
 
 			}else{
@@ -80,12 +80,12 @@ if (isset($_GET['url'])) {
 					require "../mvc/controller/".$rota['action'].".php";
 					if (!isset($layout))
 						$layout = "default";
-					require "../mvc/view/layout/".$layout.".php";
+					require "../mvc/view/layout/".$layout.".war";
 					exit();
 
 				}else{
-					exit();
 					echo "404";
+					exit();
 				}
 			}
 		}		

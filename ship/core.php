@@ -85,7 +85,7 @@ function content(){
 	global $controller;
 	global $action;
 
-	require "../mvc/view/".$controller."/".$action.".php";
+	require "../mvc/view/".$controller."/".$action.".war";
 }
 
 //Pega variaveis por get
@@ -103,7 +103,7 @@ $db = mysql_select_db ($bd) or die ("Erro ao encontrar o banco de dados: ".mysql
 
 function element($element) {
 	global $root;
-	$r = require "../mvc/view/element/".$element.".php";
+	$r = require "../mvc/view/element/".$element.".war";
 	return $r;		
 }
 
