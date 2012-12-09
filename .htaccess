@@ -4,8 +4,6 @@ RewriteEngine on
  deny from all
 </Files>
 
-# RewriteRule ^([a-z0-9]+)/([a-z0-9]+)\/?$ router/router.php?controller=$1&action=$2
-
 RewriteRule ^([a-z0-9\/]+)\/?$ router/router.php?url=$1
 
 

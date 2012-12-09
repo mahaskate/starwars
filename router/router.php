@@ -2,78 +2,24 @@
 //Insere core por que qualquer pagina que venha a ser abreta aqui usa o core
 require "../ship/core.php";
 
+// Se variavel url existir faz os testes, caso contrario faz o include da home
 if (isset($_GET['url'])) {
-	$urlCompleta = $_GET['url'];
-	$url = explode("/", $urlCompleta);
-	$total = count($url);
-	//faz um loop nas rotas se existir alguma redireciona
-	foreach ($rotas as $key => $value) {
-		// Explode URL COMPLETA E PEGA SOH A PARTE SEM APRAMETRO
-		$urlCompletaFinal = "";
-		if ($total >= $value['params']) {
-			for ($i=0; $i < $value['params']; $i++) { 
-				$urlCompletaFinal .= "/".$url[$i];
-			}
-		}else{
-			$urlCompletaFinal = $urlCompleta;
-		}
-		/* FIM */
-		if ($urlCompletaFinal == $value['url']) {
-			$controller = $value['controller'];
-			$action = $value['action'];
+	//variaveis da URL
+	$url = $_GET['url'];
+	// Se o cara colocar barra no final ele ignora
+	if (substr($url, -1) == "/")
+		$url = substr($url, 0, -1);
 
-			for ($i=$value['params']; $i < $total; $i++) { 
-				$param[] = $url[$i];
-			}
+	$urlExplode = explode("/", $url);
+	$urlTotal = count($urlExplode);
 
-			require "../mvc/controller/".$controller.".php";
-			//Recebe a variavel para incluir o layout, se vazio inclui o default
-			if (!isset($layout))
-				$layout = "default";
+	echo $_SERVER['HTTP_HOST'];
 
-			require "../mvc/view/layout/".$layout.".php";
-			exit();
-		}
-	}
-	//FIM FOREACH
-}else{
-	foreach ($rotas as $key => $value) {
-		if ($value['url'] == "/"){
-			$controller = $value['controller'];
-			$action = $value['action'];
-
-			require "../mvc/controller/".$controller.".php";
-
-			//Recebe a variavel para incluir o layout, se vazio inclui o default
-			if (!isset($layout))
-				$layout = "default";
-
-			require "../mvc/view/layout/".$layout.".php";
-			exit();
-		}
+	// Faz comparação com as rotas
+	foreach ($rotas as $key => $rota) {
+		
 	}
 
-}
-
-//Se não redirecionar pelas rotas a url deve conter no minimo dois parametros
-if ($total < 2) {
-	echo "url inválida, manda 404";
-	exit();
 }else{
-	$controller = $url[0];
-	$action = $url[1];
-	for ($i=2; $i < $total; $i++) { 
-		$param[] = $url[$i];
-	}
+	echo "entra home";
 }
-
-if (file_exists("../mvc/view/".$controller."/".$action.".php")) {
-	require "../mvc/controller/".$controller.".php";
-	//Recebe a variavel para incluir o layout, se vazio inclui o default
-	if (!isset($layout))
-		$layout = "default";
-	require "../mvc/view/layout/".$layout.".php";
-}else{
-	echo "url inválida";
-}
-?>

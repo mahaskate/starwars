@@ -29,10 +29,18 @@ function root(){
 	return $root;
 }
 
-function rota($caminho,$redirect = array()){
-	$i = explode("/", $caminho);
-	$i = count($i)-1;
-	$rotas = array('url'=>$caminho,'controller'=>$redirect['controller'],'action'=>$redirect['action'],'params'=>$i);
+function rota($rota,$parametros = array()){
+	// Variaveis recebem valor default
+	if (!isset($parametros['varsQuant']))
+			$parametros['varsQuant'] = 0;
+	if (!isset($parametros['infiniteVars']))
+			$parametros['infiniteVars'] = false;
+	if (!isset($parametros['firstVar']))
+			$parametros['firstVar'] = false;
+
+	$rotaExplode = explode("/", $rota);
+	$rotaTotal = count($rotaExplode);
+	$rotas = array('rota'=>$rota, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'varsQuant' => $parametros['varsQuant'],'infiniteVars'=>$parametros['infiniteVars'],'firstVar'=>$parametros['firstVar']);
 	return $rotas;
 }
 
