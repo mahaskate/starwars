@@ -6,18 +6,70 @@ require "../ship/core.php";
 if (isset($_GET['url'])) {
 	//variaveis da URL
 	$url = $_GET['url'];
-	// Se o cara colocar barra no final ele ignora
-	if (substr($url, -1) == "/")
-		$url = substr($url, 0, -1);
-
-	$urlExplode = explode("/", $url);
-	$urlTotal = count($urlExplode);
-
-	echo $_SERVER['HTTP_HOST'];
 
 	// Faz comparação com as rotas
 	foreach ($rotas as $key => $rota) {
-		
+		// Se o cara colocar barra no final ele ignora
+		if (substr($url, -1) == "/")
+			$url = substr($url, 0, -1);
+
+		$urlExplode = explode("/", $url);
+		$urlTotal = count($urlExplode);
+
+		// Reinicia variavel URL FINAL
+		$urlFinal = "";
+		// Reinicia variavel VARS
+		$vars = "";
+		// Se firstVar estiver true e a URL tiver só um parametro, manda pra pagina e passa oq ta digitado como parametro
+		if ($rota['rota'] == "*" AND $urlTotal == 1 AND $rota['firstVar'] == true) {
+			echo "direciona pra pagina tipo nomesite.com/variavel - ";
+			$vars[] = $url;
+		}
+		// Se a url tiver mais de um parametro e o firstVar habilitado ele passa o primeiro parametro como variavel e a url final fica sem o primeiro parametro
+		if ($urlTotal > 1 AND $rota['firstVar'] == true) {
+			// Já passa o primeiro parametro como variavel
+			$vars[] = $urlExplode[0];
+			// Deleta o primeiro parametro da url pois ele n faz parte da url
+			unset($urlExplode[0]);
+			// Remonta array URLEXPLODE
+			$i = 0;
+			foreach ($urlExplode as $value) {
+				$novaUrlExplode[$i] = $value;
+				$i++;
+			}
+			$urlExplode = $novaUrlExplode;
+			$urlTotal = count($urlExplode);
+		}
+		// Url final deve ter a mesma quatidade da rota, o resto é variavel
+		if ($urlTotal >= $rota['rotaTotal']) {
+			for ($i=0; $i < $rota['rotaTotal']; $i++) { 
+				$urlFinal .= $urlExplode[$i]."/";
+			}
+		}
+		// Carrega variaveis, ou seja, oq não é url vira variavel
+		for ($i=$rota['rotaTotal']; $i < $urlTotal; $i++) { 
+			$vars[] = $urlExplode[$i];
+		}
+
+		if (is_array($vars))
+			$varsTotal = count($vars);
+		else
+			$varsTotal = 0;
+
+		$urlFinal = substr($urlFinal, 0, -1);
+
+		echo $rota['varsQuant'];
+		echo "<br>";
+		if ($rota['infiniteVars'] == true OR $varsTotal == $rota['varsQuant']) {	
+			# code...
+			if ($urlFinal == $rota['rota']) {
+				# code...
+				echo $rota['rota'] - "deu boa";
+				echo "<br>";
+			}
+		}		
+		//print_r($vars);
+
 	}
 
 }else{

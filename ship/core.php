@@ -15,6 +15,16 @@ require "../router/rotas.php";
 if (!isset($titulo))
 	$titulo = "Star Wars Framework";
 
+// Função de rota
+function urlFinal($urlExplode = array(),$flag=0){
+	$urlFinal = "";
+	foreach ($urlExplode as $value) {
+		$urlFinal .= $value."/";
+	}
+	$urlFinal = substr($urlFinal, 0, -1);
+	return $urlFinal;
+}
+
 //função ROTA
 
 function root(){
@@ -40,7 +50,8 @@ function rota($rota,$parametros = array()){
 
 	$rotaExplode = explode("/", $rota);
 	$rotaTotal = count($rotaExplode);
-	$rotas = array('rota'=>$rota, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'varsQuant' => $parametros['varsQuant'],'infiniteVars'=>$parametros['infiniteVars'],'firstVar'=>$parametros['firstVar']);
+	$rotaTotal--;
+	$rotas = array('rota'=>$rota, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'varsQuant' => $parametros['varsQuant'],'infiniteVars'=>$parametros['infiniteVars'],'firstVar'=>$parametros['firstVar'],'rotaTotal'=>$rotaTotal);
 	return $rotas;
 }
 
