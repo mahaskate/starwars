@@ -88,11 +88,53 @@ if (isset($_GET['url'])) {
 					exit();
 				}
 			}
-		}		
-		//print_r($vars);
+		}
+	}
 
+	// Se não casar com nenhuma rota direciona para o caminho normal
+	$urlExplode = explode("/", $url);
+	$urlTotal = count($urlExplode);
+	$vars = "";
+	// Se tiver mais de 1 parametro OK caso contrario 404
+	if ($urlTotal > 1) {
+		$controller = $urlExplode[0];
+		$action = $urlExplode[1];
+		// Se quantidade de parametros forem maiores que dois monta array com variaveis a serem passadas
+		if ($urlTotal > 2) {
+			for ($i=2; $i < $urlTotal; $i++) { 
+				$vars[] = $urlExplode[$i];
+			}
+		}
+
+		// Redireciona
+		if (file_exists("../mvc/view/".$controller."/".$action.".war") == true){
+			require "../mvc/controller/".$controller.".php";
+			if (!isset($layout))
+				$layout = "default";
+			require "../mvc/view/layout/".$layout.".war";
+			exit();
+
+		}else{
+			echo "404";
+			exit();
+		}
+	}else{
+		echo "404";
 	}
 
 }else{
-	echo "entra home";
+	$controller = $home['controller'];
+	$action = $home['action'];
+
+	if (file_exists("../mvc/controller/".$home['action'].".php")){
+		require "../mvc/controller/".$home['action'].".php";
+		if (!isset($layout))
+			$layout = "default";
+		require "../mvc/view/layout/".$layout.".war";
+		exit();
+
+	}else{
+		echo "404";
+		exit();
+	}
 }

@@ -51,8 +51,8 @@ function rota($rota,$parametros = array()){
 		$parametros['varsQuant']++;
 	if ($rota == "*")
 		$parametros['firstVar'] = true;
-
-	if ($rota != '*')
+	
+	if ($rota != '*' OR $rota != "/")
 		$rota = substr($rota, 1);
 	$rotaExplode = explode("/", $rota);
 	$rotaTotal = count($rotaExplode);

@@ -1,1 +1,5 @@
-passwordGen();
+<?php
+
+print_r($vars);
+
+?>

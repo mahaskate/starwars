@@ -1,6 +1,4 @@
 <?php
-global $vars;
-
-echo $vars[0];
+echo "oi"
 
 ?>
