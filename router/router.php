@@ -22,8 +22,22 @@ if (isset($_GET['url'])) {
 		$vars = "";
 		// Se firstVar estiver true e a URL tiver só um parametro, manda pra pagina e passa oq ta digitado como parametro
 		if ($rota['rota'] == "*" AND $urlTotal == 1 AND $rota['firstVar'] == true) {
-			echo "direciona pra pagina tipo nomesite.com/variavel - ";
-			$vars[] = $url;
+			$controller = $rota['controller'];
+			$action = $rota['action'];
+
+			if (file_exists("../mvc/controller/".$rota['action'].".php")){
+				$vars[] = $url;
+				print_r($vars);
+				require "../mvc/controller/".$rota['action'].".php";
+				if (!isset($layout))
+					$layout = "default";
+				require "../mvc/view/layout/".$layout.".php";
+				exit();
+
+			}else{
+				exit();
+				echo "404";
+			}
 		}
 		// Se a url tiver mais de um parametro e o firstVar habilitado ele passa o primeiro parametro como variavel e a url final fica sem o primeiro parametro
 		if ($urlTotal > 1 AND $rota['firstVar'] == true) {
@@ -45,6 +59,7 @@ if (isset($_GET['url'])) {
 			for ($i=0; $i < $rota['rotaTotal']; $i++) { 
 				$urlFinal .= $urlExplode[$i]."/";
 			}
+			$urlFinal = substr($urlFinal, 0, -1);
 		}
 		// Carrega variaveis, ou seja, oq não é url vira variavel
 		for ($i=$rota['rotaTotal']; $i < $urlTotal; $i++) { 
@@ -56,16 +71,22 @@ if (isset($_GET['url'])) {
 		else
 			$varsTotal = 0;
 
-		$urlFinal = substr($urlFinal, 0, -1);
-
-		echo $rota['varsQuant'];
-		echo "<br>";
 		if ($rota['infiniteVars'] == true OR $varsTotal == $rota['varsQuant']) {	
-			# code...
 			if ($urlFinal == $rota['rota']) {
-				# code...
-				echo $rota['rota'] - "deu boa";
-				echo "<br>";
+				$controller = $rota['controller'];
+				$action = $rota['action'];
+
+				if (file_exists("../mvc/controller/".$rota['action'].".php")){
+					require "../mvc/controller/".$rota['action'].".php";
+					if (!isset($layout))
+						$layout = "default";
+					require "../mvc/view/layout/".$layout.".php";
+					exit();
+
+				}else{
+					exit();
+					echo "404";
+				}
 			}
 		}		
 		//print_r($vars);

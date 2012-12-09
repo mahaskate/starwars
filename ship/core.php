@@ -47,10 +47,16 @@ function rota($rota,$parametros = array()){
 			$parametros['infiniteVars'] = false;
 	if (!isset($parametros['firstVar']))
 			$parametros['firstVar'] = false;
+	if ($parametros['firstVar'] == true)
+		$parametros['varsQuant']++;
+	if ($rota == "*")
+		$parametros['firstVar'] = true;
 
+	if ($rota != '*')
+		$rota = substr($rota, 1);
 	$rotaExplode = explode("/", $rota);
 	$rotaTotal = count($rotaExplode);
-	$rotaTotal--;
+
 	$rotas = array('rota'=>$rota, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'varsQuant' => $parametros['varsQuant'],'infiniteVars'=>$parametros['infiniteVars'],'firstVar'=>$parametros['firstVar'],'rotaTotal'=>$rotaTotal);
 	return $rotas;
 }

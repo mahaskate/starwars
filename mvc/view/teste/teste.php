@@ -1,6 +1,6 @@
 <?php
-echo img('teste/nave.png');
+global $vars;
 
-echo $_GET['oi'];
+echo $vars[0];
 
 ?>
