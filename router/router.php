@@ -91,6 +91,7 @@ if (isset($_GET['url'])) {
 		}
 	}
 
+
 	// Se não casar com nenhuma rota direciona para o caminho normal
 	$urlExplode = explode("/", $url);
 	$urlTotal = count($urlExplode);
@@ -121,6 +122,7 @@ if (isset($_GET['url'])) {
 	}else{
 		echo "404";
 	}
+
 
 }else{
 	$controller = $home['controller'];
