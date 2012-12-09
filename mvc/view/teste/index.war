@@ -1,5 +1,7 @@
 <?php
 
+global $vars;
+
 print_r($vars);
 
 ?>
