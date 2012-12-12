@@ -9,4 +9,7 @@ $(document).ready(function(){
 	$(".ttb").tooltip({placement:'bottom'});
 	$(".ttl").tooltip({placement:'left'});
 	$(".ttr").tooltip({placement:'right'});
+
+	//Animação do container flash
+	$('#flash').fadeIn(700);
 });

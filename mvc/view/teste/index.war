@@ -1,7 +1,9 @@
-<?php
+<?php 
 
-global $vars;
-
-print_r($vars);
+echo form('post','users','form-vertical');
+	echo formText('username');
+	echo formText('password');
+	echo formSubmit('Salvar dados','btn-success');
+echo formEnd();
 
 ?>

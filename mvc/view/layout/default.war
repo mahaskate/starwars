@@ -10,18 +10,21 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 
-	<?php echo coreHead();?>
-
 	<!-- FAVICON -->
 	<?php echo favicon('favicon');?>
+
+	<?php echo coreHead();?>
+
 </head>
 <body>
 
 <?php echo flash(); ?>
 
-<h1>Layout default</h1>
+<div class="container">
+	<?php content();?>
+</div>
 
-<?php content();?>
+<?php element('footer');?>
 
 </body>
 </html>

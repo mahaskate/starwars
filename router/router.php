@@ -25,18 +25,18 @@ if (isset($_GET['url'])) {
 			$controller = $rota['controller'];
 			$action = $rota['action'];
 
-			if (file_exists("../mvc/controller/".$rota['action'].".php")){
+			if (file_exists("../mvc/controller/".$rota['action']."Controller.php")){
 				$vars[] = $url;
 				print_r($vars);
-				require "../mvc/controller/".$rota['action'].".php";
+				require "../mvc/controller/".$controller."/".$rota['action']."Controller.php";
 				if (!isset($layout))
 					$layout = "default";
 				require "../mvc/view/layout/".$layout.".war";
 				exit();
 
 			}else{
-				exit();
 				echo "404";
+				exit();
 			}
 		}
 		// Se a url tiver mais de um parametro e o firstVar habilitado ele passa o primeiro parametro como variavel e a url final fica sem o primeiro parametro
@@ -76,8 +76,8 @@ if (isset($_GET['url'])) {
 				$controller = $rota['controller'];
 				$action = $rota['action'];
 
-				if (file_exists("../mvc/controller/".$rota['action'].".php")){
-					require "../mvc/controller/".$rota['action'].".php";
+				if (file_exists("../mvc/controller/".$controller."/".$rota['action']."Controller.php")){
+					require "../mvc/controller/".$controller."/".$rota['action']."Controller.php";
 					if (!isset($layout))
 						$layout = "default";
 					require "../mvc/view/layout/".$layout.".war";
@@ -108,8 +108,8 @@ if (isset($_GET['url'])) {
 		}
 
 		// Redireciona
-		if (file_exists("../mvc/view/".$controller."/".$action.".war") == true){
-			require "../mvc/controller/".$controller.".php";
+		if (file_exists("../mvc/controller/".$controller."/".$action."Controller.php") == true){
+			require "../mvc/controller/".$controller."/".$action."Controller.php";
 			if (!isset($layout))
 				$layout = "default";
 			require "../mvc/view/layout/".$layout.".war";
@@ -128,8 +128,8 @@ if (isset($_GET['url'])) {
 	$controller = $home['controller'];
 	$action = $home['action'];
 
-	if (file_exists("../mvc/controller/".$home['action'].".php")){
-		require "../mvc/controller/".$home['action'].".php";
+	if (file_exists("../mvc/controller/".$controller."/".$home['action']."Controller.php")){
+		require "../mvc/controller/".$controller."/".$home['action']."Controller.php";
 		if (!isset($layout))
 			$layout = "default";
 		require "../mvc/view/layout/".$layout.".war";

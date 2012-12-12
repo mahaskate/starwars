@@ -3,9 +3,12 @@ session_start();
 //CONFIGURAÇÕES
 //COLOQUE AQUI A RAIZ
 $root = root();
+$data = $_POST;
+
 
 //carrega engine para o crud
 require "crud.php";
+require "data.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
 //Carrega rota
@@ -14,6 +17,12 @@ require "../router/rotas.php";
 //Se não setar titulo insere o titulo default
 if (!isset($titulo))
 	$titulo = "Star Wars Framework";
+
+function set($nome, $conteudo){
+	$a = $nome;
+	$$a = $conteudo;
+	return $$a;
+}
 
 // Função de rota
 function urlFinal($urlExplode = array(),$flag=0){
@@ -51,9 +60,10 @@ function rota($rota,$parametros = array()){
 		$parametros['varsQuant']++;
 	if ($rota == "*")
 		$parametros['firstVar'] = true;
-	
-	if ($rota != '*' OR $rota != "/")
+
+	if ($rota != '*')
 		$rota = substr($rota, 1);
+	
 	$rotaExplode = explode("/", $rota);
 	$rotaTotal = count($rotaExplode);
 
@@ -63,8 +73,9 @@ function rota($rota,$parametros = array()){
 
 //função insere todos os css e script
 function coreHead(){
-	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen' charset='utf-8'>";
-	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen' charset='utf-8'>";
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen'>";
+	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>";
+
 	$r .= "<script src='".root()."/garagem/js/jquery.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."/garagem/js/bootstrap.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>";
@@ -88,6 +99,8 @@ function content(){
 	require "../mvc/view/".$controller."/".$action.".war";
 }
 
+// Insere vazio em variaveis
+
 //Pega variaveis por get
 function param($num){
 	global $param;
@@ -96,10 +109,9 @@ function param($num){
 
 //conecta no banco de dados
 header('Content-Type: text/html; charset=utf-8');
-/*$link = mysql_connect ($servidor,$usuario_bd) or die ("Erro ao conectar no banco de dados: ".mysql_error());
+$link = mysql_connect ($servidor,$usuario_bd) or die ("Erro ao conectar no banco de dados: ".mysql_error());
 mysql_set_charset("utf8",$link);
 $db = mysql_select_db ($bd) or die ("Erro ao encontrar o banco de dados: ".mysql_error());
-*/
 
 function element($element) {
 	global $root;
@@ -117,33 +129,6 @@ function script($script){
 	global $root;
 	$r = "<script src='".$root."/garagem/js/".$script.".js' type='text/javascript'></script>";
 	return $r;
-}
-//Datas
-function isDate($data){
-	$data = explode("/", $data);
-	if (count($data) != 3) {
-		return false;
-	}else{
-		if ($data[0] == 0 OR $data[0] > 31 OR $data[1] == 0 OR $data[1] > 12 OR $data[2] < 1601 OR $data[2] > 9999) {
-			return false;
-		}else{
-			return true;
-		}
-	}
-
-}
-function dateSql($data){
-	if (isDate($data)) {
-		$data = explode("/", $data);
-		$data = $data[2]."-".$data[1]."-".$data[0]." ".date("h:i:s");
-		return $data;
-	}else
-		return false;
-}
-function dateBrasil($data){
-	$data = explode("-", $data);
-	$data = $data[2]."/".$data[1]."/".$data[0];
-	return $data;
 }
 //Link
 function a($conteudo,$destino){
@@ -179,12 +164,26 @@ function setFlash($msg,$style=null,$close=true){
 //Container que exibirá a mensagem flash
 function flash(){
 	if(isset($_SESSION['flash'])){
-		$r = "<div class='flash'>";
-		$r .= $_SESSION['flash'];
+		$r = "<div id='flash' class='flash'>";
+			$r .= $_SESSION['flash'];
 		$r .= "</div>";
 		unset($_SESSION['flash']);
 		return $r;
 	}
+}
+
+function redirect($options = array(null)){
+	global $rotas;
+	if (count($rotas) > 0){
+		foreach ($rotas as $key => $rota) {
+			if ($rota['controller']."/".$rota['action'] == $options['controller']."/".$options['action']) {
+				header("Location: ".root()."/".$rota['rota']);
+				exit();
+			}
+		}
+	}
+	header("Location: ".root()."/".$options['controller']."/".$options['action']);
+	exit();
 }
 
 /**
