@@ -13,7 +13,7 @@
 	<!-- FAVICON -->
 	<?php echo favicon('favicon');?>
 
-	<?php echo coreHead();?>
+	<?php echo cssCore();?>
 
 </head>
 <body>
@@ -21,10 +21,15 @@
 <?php echo flash(); ?>
 
 <div class="container">
-	<?php content();?>
+	<?php
+		$content = content();
+		require $content;
+	?>
 </div>
 
 <?php element('footer');?>
 
 </body>
 </html>
+
+<?php /* Javascript por último */ echo scriptCore();?>

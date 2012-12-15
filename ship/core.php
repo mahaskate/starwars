@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+error_reporting(E_ALL);
+
 //CONFIGURAÇÕES
 //COLOQUE AQUI A RAIZ
 $root = root();
@@ -9,6 +12,7 @@ $data = $_POST;
 //carrega engine para o crud
 require "crud.php";
 require "data.php";
+require "util.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
 //Carrega rota
@@ -72,13 +76,16 @@ function rota($rota,$parametros = array()){
 }
 
 //função insere todos os css e script
-function coreHead(){
-	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen'>";
-	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>";
-
-	$r .= "<script src='".root()."/garagem/js/jquery.js' type='text/javascript'></script>";
+function scriptCore(){
+	$r = "<script src='".root()."/garagem/js/jquery.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."/garagem/js/bootstrap.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>";
+	return $r;
+}
+
+function cssCore(){
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen'>";
+	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>";
 	return $r;
 }
 
@@ -96,7 +103,8 @@ function content(){
 	global $controller;
 	global $action;
 
-	require "../mvc/view/".$controller."/".$action.".war";
+	$r = "../mvc/view/".$controller."/".$action.".war";
+	return $r;
 }
 
 // Insere vazio em variaveis

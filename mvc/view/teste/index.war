@@ -1,9 +1,7 @@
-<?php 
+<?php
 
-echo form('post','users','form-vertical');
-	echo formText('username');
-	echo formText('password');
-	echo formSubmit('Salvar dados','btn-success');
-echo formEnd();
+$texto = "Governo do amapá mentém greve até segunda ordem";
+
+echo slug($texto);
 
 ?>
