@@ -31,6 +31,11 @@ function formActionsEnd(){
 		return $r;
 }
 
+function formLegend($a){
+	$a = "<legend>".$a."</legend>";
+	return $a;
+}
+
 function formList($name,$valores = array(),$options=array('placeholder'=>'','class'=>'','caguei'=>''),$label2=true){
 	if (!isset($options['class']))
 		$options['class'] = "";
@@ -148,6 +153,18 @@ function formSubmit($value=null,$class=null,$action=false){
 	}else{
 		$r = "<button type='submit' class='btn ".$class."'>".$value."</button>";
 	}
+	return $r;
+}
+
+function formControlGroup(){
+		$r = "<div class='control-group'>";
+	$r .= "<div class='controls'>";
+	return $r;
+}
+
+function formControlGroupEnd(){
+		$r = "</div>";
+	$r .= "</div>";
 	return $r;
 }
 

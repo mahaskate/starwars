@@ -5,5 +5,5 @@ $salt = "dasdasdhasdas897ds89a8as";
 $bd = "cake";
 $senha_bd = "";
 $usuario_bd = "root";
-$servidor = "localhost";
+$servidor = "192.168.0.101";
 ?>

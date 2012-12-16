@@ -1,9 +1,10 @@
 <?php
 
 // Define Home
-$home = array("controller"=>"teste","action"=>"teste",'quantVars'=>2);
+$home = array("controller"=>"posts","action"=>"list");
 // Define Rotas
-$rotas[] = rota("/daniel",array("controller"=>"teste","action"=>"indexd"));
+$rotas[] = rota("/criar",array("controller"=>"posts","action"=>"add"));
+$rotas[] = rota("/post",array("controller"=>"posts","action"=>"view",'varsQuant'=>1));
 
 // Tem que ser por ultimo
 //$rotas[] = rota("*",array("controller"=>"teste","action"=>"teste"));

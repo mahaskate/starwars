@@ -114,8 +114,8 @@ if (isset($_GET['url'])) {
 				$layout = "default";
 			require "../mvc/view/layout/".$layout.".war";
 			exit();
-
 		}else{
+			echo $controller." - ".$action;
 			echo "404";
 			exit();
 		}
@@ -136,7 +136,7 @@ if (isset($_GET['url'])) {
 		exit();
 
 	}else{
-		echo "404";
+		echo "Nenhuma home como padrão";
 		exit();
 	}
 }

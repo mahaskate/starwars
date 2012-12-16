@@ -1,0 +1,8 @@
+<?php if (!empty($post)): ?>
+	<p><?php echo $post['created']; ?></p>
+	<h2><?php echo $post['title'] ?></h2>
+	<hr>
+	<p><?php echo $post['body'] ?></p>
+<?php else: ?>
+	<p>O endereço que você digitou não existe.</p>
+<?php endif; ?>

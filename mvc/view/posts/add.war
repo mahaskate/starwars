@@ -1,0 +1,10 @@
+<?php 
+
+echo form();
+	echo formLegend('Novo post');
+	echo formText('title',array('class'=>'span8'));
+	echo formText('body',array('class'=>'span8','type'=>'textarea','style'=>'height:300px;'));
+	echo formSubmit('Postar',null,true);
+echo formEnd();
+
+?>

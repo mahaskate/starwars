@@ -13,6 +13,7 @@ $data = $_POST;
 require "crud.php";
 require "data.php";
 require "util.php";
+require "html.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
 //Carrega rota
@@ -136,16 +137,6 @@ function css($css){
 function script($script){
 	global $root;
 	$r = "<script src='".$root."/garagem/js/".$script.".js' type='text/javascript'></script>";
-	return $r;
-}
-//Link
-function a($conteudo,$destino){
-	$r = "<a href=''>".$conteudo."</a>";
-	return $r;
-}
-//Inserir imagem
-function img($img){
-	$r = "<img src='".root()."/garagem/img/".$img."'>";
 	return $r;
 }
 
