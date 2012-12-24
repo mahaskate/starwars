@@ -5,17 +5,22 @@ error_reporting(E_ALL);
 
 //CONFIGURAÇÕES
 //COLOQUE AQUI A RAIZ
-$root = root();
-$data = $_POST;
+$_SESSION['root'] = root();
+
+if($_POST)
+	$data = $_POST;
 
 
 //carrega engine para o crud
 require "crud.php";
-require "data.php";
+require "login.php";
 require "util.php";
 require "html.php";
+require "uploadFiles.php";
+require "components.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
+require "database.php";
 //Carrega rota
 require "../router/rotas.php";
 
@@ -23,10 +28,67 @@ require "../router/rotas.php";
 if (!isset($titulo))
 	$titulo = "Star Wars Framework";
 
-function set($nome, $conteudo){
-	$a = $nome;
-	$$a = $conteudo;
-	return $$a;
+function pluginJs($a){
+	echo "<script type='text/javascript' src='".root()."/plugins/".$a."/js/".$a.".js'></script>";
+	require "../plugins/".$a."/core.php";
+}
+
+function path($caminho){
+	return "../garagem/".$caminho;
+}
+
+function getValues(){
+	$parametros = explode("?", $_SERVER['REQUEST_URI']);
+	//Se array possuir duas posições significa que teve parametros por get passado, caso contrario passa uma variavel vazia
+	if (count($parametros)!=1) {
+		$parametros = $parametros[1];
+		$parametros = explode("&", $parametros);
+		foreach ($parametros as $value) {
+			//Explode cada valor do array para separar nome de valor para montar o array depois com chave e valor respectivo
+			$id = explode('=',$value);
+			$chave[] = $id[0];
+			//Decode por causa de acentos e espaços
+			$valor[] = urlDecode($id[1]);
+		}
+		$array = array_combine($chave, $valor);
+		return $array; 
+	}else{
+		$array = null;
+		return $array;
+	}
+	
+}
+
+function btnDelete($valor,$msg,$id,$options=array()){
+	if (!isset($options['class'])) {
+		$options['class'] = "";
+	}
+	$destino = "/".$options['controller']."/".$options['action'];
+	$on = "return deleteAjax(/post/delete,'quer',1)/";
+	$r = "<button class='btn ".$options['class']."' onclick='".$on."'>".$valor."</button>";
+	return $r;
+}
+
+function ajaxPost($options=array()){
+	$parametros = "";
+	foreach ($options['valores'] as $key => $value) {
+		$parametros .= $key.":'".$value."',";
+	}
+	$parametros = substr($parametros, 0, -1);
+	$r = "<script type='text/javascript'>";
+		$r .= "$(document).ready(function(){
+			if(confirm('oiiiiiiiiii')){
+				$.post('".root()."/mvc/ajax/".$options['controller']."/".$options['action'].".php',{".$parametros."},function(callback){
+					return callback;
+
+				});
+			}else{
+				return false;
+
+			}
+		});";
+	$r .= "</script>";
+	echo $r;
 }
 
 // Função de rota
@@ -43,7 +105,7 @@ function urlFinal($urlExplode = array(),$flag=0){
 
 function root(){
 	$root = $_SERVER['SERVER_NAME'];
-	if ($root == "localhost") {
+	if ($root == "localhost" OR preg_match("/192.168/", $root)) {
 		$root = $_SERVER['PHP_SELF'];
 		$root = explode("/",$root);
 		$root = "/".$root[1];
@@ -78,15 +140,37 @@ function rota($rota,$parametros = array()){
 
 //função insere todos os css e script
 function scriptCore(){
-	$r = "<script src='".root()."/garagem/js/jquery.js' type='text/javascript'></script>";
-	$r .= "<script src='".root()."/garagem/js/bootstrap.js' type='text/javascript'></script>";
+	global $pluginsJs;
+
+	$r = "<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>";
+	$r .= "<script src='".root()."/garagem/js/bootstrap.min.js' type='text/javascript'></script>";
 	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>";
+
+	if (!empty($pluginsJs)) {
+		foreach ($pluginsJs as $key =>$value) {
+			foreach ($value as $js){
+				$r .= "<script src='".root()."/pluginsJs/".$key."/js/".$js.".js' type='text/javascript'></script>";
+			}
+			$r .= "<script src='".root()."/pluginsJs/".$key."/core.js' type='text/javascript'></script>";
+		}
+	}
 	return $r;
 }
 
 function cssCore(){
-	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.css' type='text/css' media='screen'>";
+	global $pluginsJsCss;
+
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.min.css' type='text/css' media='screen'>";
 	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>";
+
+	if (!empty($pluginsJsCss)) {
+		foreach ($pluginsJsCss as $key =>$value) {
+			foreach ($value as $css){
+				$r .= "<link rel='stylesheet' href='".root()."/pluginsJs/".$key."/css/".$css.".css' type='text/css' media='screen'>";
+			}
+		}
+	}
+
 	return $r;
 }
 
@@ -116,12 +200,6 @@ function param($num){
 	return $param[$num];
 }
 
-//conecta no banco de dados
-header('Content-Type: text/html; charset=utf-8');
-$link = mysql_connect ($servidor,$usuario_bd) or die ("Erro ao conectar no banco de dados: ".mysql_error());
-mysql_set_charset("utf8",$link);
-$db = mysql_select_db ($bd) or die ("Erro ao encontrar o banco de dados: ".mysql_error());
-
 function element($element) {
 	global $root;
 	$r = require "../mvc/view/element/".$element.".war";
@@ -135,8 +213,7 @@ function css($css){
 }
 
 function script($script){
-	global $root;
-	$r = "<script src='".$root."/garagem/js/".$script.".js' type='text/javascript'></script>";
+	$r = "<script src='".root()."/garagem/js/".$script.".js' type='text/javascript'></script>";
 	return $r;
 }
 
@@ -183,68 +260,6 @@ function redirect($options = array(null)){
 	}
 	header("Location: ".root()."/".$options['controller']."/".$options['action']);
 	exit();
-}
-
-/**
-* Função Hash
-*/
-function hashIt($a){
-	global $salt;
-	$a = md5($a.$salt);
-	return $a;
-}
-
-
-/**
-* Gera Senha aleatoria
-*
-* @author Thiago Belem <http://blog.thiagobelem.net/gerando-senhas-aleatorias-com-php/>
-*
-* @param integer $tamanho Tamanho da senha a ser gerada
-* @param boolean $maiusculas Se terá letras maiúsculas
-* @param boolean $numeros Se terá números
-* @param boolean $simbolos Se terá símbolos
-* 
-*/
-function passwordGen($tamanho = 8, $maiusculas = false, $numeros = true, $simbolos = false){
-$lmin = 'abcdefghijklmnopqrstuvwxyz';
-$lmai = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-$num = '1234567890';
-$simb = '!@#$%*-';
-$retorno = '';
-$caracteres = '';
-
-$caracteres .= $lmin;
-if ($maiusculas) $caracteres .= $lmai;
-if ($numeros) $caracteres .= $num;
-if ($simbolos) $caracteres .= $simb;
-
-$len = strlen($caracteres);
-for ($n = 1; $n <= $tamanho; $n++) {
-$rand = mt_rand(1, $len);
-$retorno .= $caracteres[$rand-1];
-}
-return $retorno;
-}
-
-/**
-* Gera um token de 32 Caracteres
-*/
-function tokenGen(){
-	$a = passwordGen(32);
-	$a = md5($a);
-	return $a;
-}
-
-/**
-* Função anti sql injection
-*/
-function antiInjection($a){
-	$a = preg_replace("/(from|select|insert|delete|where|drop table|show tables|#|\*|--|\\\\)/","",$a);// remove palavras que contenham sintaxe sql
-	$a = trim($a);//limpa espaços vazio
-	$a = strip_tags($a);//tira tags html e php
-	$a = addslashes($a);//Adiciona barras invertidas a uma string
-	return $a;
 }
 
 ?>

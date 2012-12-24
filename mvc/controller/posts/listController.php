@@ -1,6 +1,10 @@
 <?php 
-$titulo = "Posts";
 
-$posts = find('posts',array('fields'=>"id, title, body, date_format(created,'%d/%m/%Y') AS created"));
+print_r($_GET);
+
+$pluginsJsCss = array('tablesorter'=>array('style'));
+$pluginsJs = array('tablesorter'=>array('tablesorter'));
+
+$posts = find('posts');
 
 ?>

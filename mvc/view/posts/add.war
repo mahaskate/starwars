@@ -1,10 +1,14 @@
+<br>
+<?php echo a('Voltar para lista',array('class'=>'btn span2 pull-right','controller'=>'posts','action'=>'list')); ?>
+<br>
+<h3>Criar Post</h3>
+<hr>
 <?php 
-
-echo form();
-	echo formLegend('Novo post');
-	echo formText('title',array('class'=>'span8'));
-	echo formText('body',array('class'=>'span8','type'=>'textarea','style'=>'height:300px;'));
-	echo formSubmit('Postar',null,true);
+echo form(array('id'=>'validate'));
+	echo formText('title',array('class'=>'span6 required'));
+	echo formText('chamada',array('class'=>'span6'));
+	echo formtext('body',array('type'=>'textarea','class'=>'span6','style'=>'height:300px;'));
+	echo formSubmit('Salvar post','btn-primary',true);
 echo formEnd();
 
 ?>

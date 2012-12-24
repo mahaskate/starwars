@@ -12,4 +12,22 @@ $(document).ready(function(){
 
 	//Animação do container flash
 	$('#flash').fadeIn(700);
+	//Animação content
+	$('#content').hide();
+	$('#content').fadeIn('normal');
 });
+
+//Deletar por ajax
+function deleteAjax(destino,msg,id){
+	if (confirm(msg)) {
+		$.post(destino,{id:id},function(callback){
+			if (callback == 1) {
+				$('#linha'+id).fadeOut('6000');
+			}else if(callback == 2){
+				location.reload();
+			}else
+				alert('Erro ao processar a sua requisição');
+		});
+	}
+	return false;
+}

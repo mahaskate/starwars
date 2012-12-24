@@ -14,8 +14,11 @@ function form($options=array()){
 		$options['action'] = "action='".$options['action']."'";
 	if (!isset($options['method']))
 		$options['method'] = "POST";
-	if (!isset($options['enctype']))
-		$options['enctype'] = "enctype='multipart/form-data'";
+	if (isset($options['enctype']))
+		if($options['enctype'])
+			$options['enctype'] = "enctype='multipart/form-data'";
+		else
+			$options['enctype'] = "";
 	
 	$r = "<form ".$options['action']." method='".$options['method']."' class='".$options['type']."' id='".$options['id']."' ".$options['enctype'].">";
 	return $r;
@@ -71,7 +74,7 @@ function formList($name,$valores = array(),$options=array('placeholder'=>'','cla
 }
 
 
-function formText($name,$options=array('placeholder'=>'','class'=>'','caguei'=>''),$label2=true){
+function formText($name,$options=array(),$label2=true){
 	if (!isset($options['class']))
 		$options['class'] = "";
 	if (!isset($options['label']))
@@ -88,12 +91,14 @@ function formText($name,$options=array('placeholder'=>'','class'=>'','caguei'=>'
 		$options['help-block'] = "";
 	if (!isset($options['help-inline']))
 		$options['help-inline'] = "";
+	
 	if (!isset($options['type']))
-		$options['type'] = "";
-	if ($options['type'] == 'password' OR $name == 'password' OR $name == 'senha')
-		$type = 'password';
+		$type = "text";
 	else
-		$type = 'text';
+		$type = $options['type'];
+
+	if ($type == 'password' OR $name == 'password' OR $name == 'senha')
+		$type = 'password';
 
 
 	// Se não setar label trata o name como label
@@ -102,14 +107,26 @@ function formText($name,$options=array('placeholder'=>'','class'=>'','caguei'=>'
 	else
 		$nameLabel = $options['label'];
 
+	global $data;
+	if ($_POST)
+		if($type != "file")
+			$value = $data[$name];
+		else
+			$value = "";
+
+	else if(isset($options['value']))
+		$value = $options['value'];
+	else
+		$value = "";
+
 	$r = "<div class='control-group'>";
 		if ($label2)
 			$r .= "<label class='control-label' for='".$name."'>".$nameLabel."</label>";
 		$r .= "<div class='controls'>";
-			if ($options['type'] == 'textarea')
-				$r .= "<textarea id='".$name."' class='".$options['class']."' style='resize:none;".$options['style']."' name='".$name."' placeholder='".$options['placeholder']."' maxlength=".$options['maxlength']."></textarea>";
+			if ($type == 'textarea')
+				$r .= "<textarea id='".$name."' class='".$options['class']."' style='resize:none;".$options['style']."' name='".$name."' placeholder='".$options['placeholder']."' maxlength=".$options['maxlength'].">".$value."</textarea>";
 			else
-				$r .= "<input type='".$type."' id='".$name."' class='".$options['class']."' style='".$options['style']."' name='".$name."' placeholder='".$options['placeholder']."' maxlength=".$options['maxlength'].">";
+				$r .= "<input type='".$type."' id='".$name."' class='".$options['class']."' style='".$options['style']."' name='".$name."' value='".$value."' placeholder='".$options['placeholder']."' maxlength=".$options['maxlength'].">";
 			if ($options['help-block'] !="")
 				$r .= "<span class='help-block'>".$options['help-block']."</span>";
 			if ($options['help-inline'] !="")
@@ -216,6 +233,11 @@ function validation($tabela,$data){
 	return true;
 }
 
+function delete($tabela,$id){
+	$r = "DELETE FROM ".$tabela." WHERE id=".$id;
+	return $r;
+}
+
 function save($tabela, $form, $id = null){
 	global $salt;
 	$campos = "";
@@ -314,6 +336,8 @@ function find($tabela,$options=array()){
 		$options['limit'] = "";
 	else
 		$options['limit'] = " LIMIT ".$options['limit'];
+
+//	echo "SELECT ".$options['fields']." FROM ".$tabela.$options['where'].$options['orderBy'].$options['limit'];
 
 	$sel = mysql_query("SELECT ".$options['fields']." FROM ".$tabela.$options['where'].$options['orderBy'].$options['limit']) or die ('Erro na tabela'.mysql_error());
 

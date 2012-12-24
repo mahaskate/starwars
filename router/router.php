@@ -1,7 +1,6 @@
 <?php
 //Insere core por que qualquer pagina que venha a ser abreta aqui usa o core
 require "../ship/core.php";
-
 // Se variavel url existir faz os testes, caso contrario faz o include da home
 if (isset($_GET['url'])) {
 	//variaveis da URL
@@ -115,7 +114,6 @@ if (isset($_GET['url'])) {
 			require "../mvc/view/layout/".$layout.".war";
 			exit();
 		}else{
-			echo $controller." - ".$action;
 			echo "404";
 			exit();
 		}

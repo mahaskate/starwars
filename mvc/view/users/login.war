@@ -1,0 +1,11 @@
+<h3>Logar</h3>
+<hr>
+<?php
+
+echo form();
+	echo formText('username');
+	echo formText('password');
+	echo formSubmit('Entrar',null, true);
+echo formend();
+
+?>

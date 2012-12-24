@@ -1,5 +1,5 @@
-	<?php 
+<?php
 function model(){
-	return array('title'=>array('required'),'body'=>array('required'));
+	return array('title'=>array('required'),'body'=>array('required'),'chamada'=>array(null));
 }
 ?>

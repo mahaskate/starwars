@@ -12,24 +12,19 @@
 
 	<!-- FAVICON -->
 	<?php echo favicon('favicon');?>
-
 	<?php echo cssCore();?>
+	<?php echo scriptCore();?>
 
 </head>
 <body>
 
 <?php echo flash(); ?>
 
-<div class="container">
+<div class="container" id="content">
 	<?php
 		$content = content();
 		require $content;
 	?>
 </div>
-
-<?php element('footer');?>
-
 </body>
 </html>
-
-<?php /* Javascript por último */ echo scriptCore();?>
