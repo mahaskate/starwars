@@ -7,8 +7,8 @@ $login = array('controller'=>'users','action'=>'login');
 //Endereço que será direcionado após o logout
 $logoutRedirect = array('controller'=>'posts','action'=>'list');
 //Varivaies de banco de dados
-$bd = "dani";
-$senha_bd = "oWrju9HG";
-$usuario_bd = "cori";
 $servidor = "127.0.0.1";
+$bd = "dani";
+$usuario_bd = "cori";
+$senha_bd = "oWrju9HG";
 ?>
