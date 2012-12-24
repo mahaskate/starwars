@@ -5,7 +5,7 @@
 
 //echo dirname(__FILE__);
 
-include "../components/wideImage/lib/wideImage.php";
+include "../components/thumb/ThumbLib.inc.php";
 
 if($_POST){
 
