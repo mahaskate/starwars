@@ -33,10 +33,6 @@ function pluginJs($a){
 	require "../plugins/".$a."/core.php";
 }
 
-function path($caminho){
-	return "../garagem/".$caminho;
-}
-
 function getValues(){
 	$parametros = explode("?", $_SERVER['REQUEST_URI']);
 	//Se array possuir duas posições significa que teve parametros por get passado, caso contrario passa uma variavel vazia
