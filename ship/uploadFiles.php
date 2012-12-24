@@ -66,6 +66,8 @@ function uploadFile($remetente=array(),$destino,$options=array()){
 	return $erro;
 }
 
+
+
 function uploadImg($remetente=array(),$destino,$options=array()){
 
 	$erro = 0;
@@ -93,7 +95,13 @@ function uploadImg($remetente=array(),$destino,$options=array()){
 		}
 	}
 
+	if($erro == 0){
+		if (copy($remetente['tmp_name'],"../garagem/".$destino."/".$remetente['name']))
+			$erro = 0;
+		else
+			$erro = 3;
+	}
+
 	return $erro;
 }
-
 ?>
