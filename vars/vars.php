@@ -10,5 +10,5 @@ $logoutRedirect = array('controller'=>'posts','action'=>'list');
 $bd = "dani";
 $senha_bd = "oWrju9HG";
 $usuario_bd = "cori";
-$servidor = "127.0.0.1";
+$servidor = "tunnel.pagodabox.com:3306";
 ?>
