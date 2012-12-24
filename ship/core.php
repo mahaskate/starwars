@@ -22,7 +22,7 @@ require "uploadFiles.php";
 require "components.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
-require "teste.php";
+require_once "bd.php";
 
 //Se não setar titulo insere o titulo default
 if (!isset($titulo))
