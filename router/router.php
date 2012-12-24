@@ -26,7 +26,6 @@ if (isset($_GET['url'])) {
 
 			if (file_exists("../mvc/controller/".$rota['action']."Controller.php")){
 				$vars[] = $url;
-				print_r($vars);
 				require "../mvc/controller/".$controller."/".$rota['action']."Controller.php";
 				if (!isset($layout))
 					$layout = "default";
