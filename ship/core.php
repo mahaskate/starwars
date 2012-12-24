@@ -11,6 +11,8 @@ if($_POST)
 	$data = $_POST;
 
 
+//Carrega rota
+require "../router/rotas.php";
 //carrega engine para o crud
 require "crud.php";
 require "login.php";
@@ -20,9 +22,7 @@ require "uploadFiles.php";
 require "components.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
-require "database.php";
-//Carrega rota
-require "../router/rotas.php";
+require "teste.php";
 
 //Se não setar titulo insere o titulo default
 if (!isset($titulo))

@@ -7,8 +7,8 @@ $login = array('controller'=>'users','action'=>'login');
 //Endereço que será direcionado após o logout
 $logoutRedirect = array('controller'=>'posts','action'=>'list');
 //Varivaies de banco de dados
-$servidor = "127.0.0.1";
-$bd = "dani";
-$usuario_bd = "cori";
-$senha_bd = "oWrju9HG";
+$server_db = "tunnel.pagodabox.com";
+$db = "dani";
+$user_db = "cori";
+$password_db = "oWrju9HG";
 ?>
