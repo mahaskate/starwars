@@ -3,7 +3,7 @@
 //echo $_SERVER['SCRIPT_NAME'];
 //require "../mvc/controller/components/wideImage/lib/wideImage.php";
 
-include "../mvc/controller/components/wideImage/lib/teste.php";
+include "../mvc/controller/components/wideImage/lib/wideImage.php";
 
 if($_POST){
 
