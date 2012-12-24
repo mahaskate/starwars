@@ -1,7 +1,4 @@
-<?php 
-
-print_r($_GET);
-
+<?php
 $pluginsJsCss = array('tablesorter'=>array('style'));
 $pluginsJs = array('tablesorter'=>array('tablesorter'));
 
