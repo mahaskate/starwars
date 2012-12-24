@@ -14,12 +14,14 @@ function form($options=array()){
 		$options['action'] = "action='".$options['action']."'";
 	if (!isset($options['method']))
 		$options['method'] = "POST";
-	if (isset($options['enctype']))
+	if (isset($options['enctype'])){
 		if($options['enctype'])
 			$options['enctype'] = "enctype='multipart/form-data'";
 		else
 			$options['enctype'] = "";
-	
+	}else
+		$options['enctype'] = "";
+
 	$r = "<form ".$options['action']." method='".$options['method']."' class='".$options['type']."' id='".$options['id']."' ".$options['enctype'].">";
 	return $r;
 }
