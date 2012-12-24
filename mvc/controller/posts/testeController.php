@@ -1,13 +1,10 @@
 <?php
 
-//acl();
+require component('facebook/core.php');
 
-include "../mvc/controller/components/thumb/ThumbLib.inc.php";
+$me = $facebook->api('/cevalinho');
 
-echo img('Lighthouse.jpg');
-
-if($_FILES){
-	copy($_FILES['foto']['tmp_name'],'/dirA/Lighthouse.jpg');
-}
+print_r($me);
 
 ?>
+<img src="https://graph.facebook.com/cevalinho/picture">
