@@ -1,9 +1,1 @@
-<?php 
-
-echo form(array('enctype'=>true));
-	echo formText('nome');
-	echo formText('foto',array('type'=>'file'));
-	echo formSubmit('Enviar foto',null,true);
-echo formEnd();
-
-?>
+<h1>Olá</h1>

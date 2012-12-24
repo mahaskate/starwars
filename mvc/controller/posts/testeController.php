@@ -1,7 +1,7 @@
 <?php
 
-echo $_SERVER['SCRIPT_NAME'];
-require "../mvc/controller/components/wideImage/lib/wideImage.php";
+//echo $_SERVER['SCRIPT_NAME'];
+//require "../mvc/controller/components/wideImage/lib/wideImage.php";
 
 if($_POST){
 
