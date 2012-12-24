@@ -1,5 +1,18 @@
---- 
-web1: 
-  php_extensions: 
-    - curl
+web1: #component type & number
+  name: starwars            #component settings
+  shared_writable_dirs:
+    - garagem/img
+  document_root: app
+  php_version: 5.3.8
+  php_extensions:
+    - mysql
     - gd
+    - eaccelerator
+     
+db1: #component type & number 
+  name: dani            #component settings
+  type: mysql
+  
+cache1:
+  name: sessions
+  type: memcached
