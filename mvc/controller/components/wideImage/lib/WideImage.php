@@ -22,6 +22,8 @@
     * @package WideImage
   **/
 
+	
+/*
 	require_once 'Exception.php';
 	
 	require_once 'Image.php';
@@ -36,7 +38,7 @@
 	require_once 'Font/TTF.php';
 	require_once 'Font/GDF.php';
 	require_once 'Font/PS.php';
-
+*/
 
 /*
 	require_once WideImage::path() . 'Exception.php';
