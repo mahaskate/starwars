@@ -1,6 +1,6 @@
 <?php
 
-acl();
+//acl();
 
 include "../mvc/controller/components/thumb/ThumbLib.inc.php";
 
