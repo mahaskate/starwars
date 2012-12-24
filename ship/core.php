@@ -20,7 +20,7 @@ require "uploadFiles.php";
 require "components.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
-require "database.php";
+//require "database.php";
 //Carrega rota
 require "../router/rotas.php";
 
