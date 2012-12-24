@@ -1,1 +1,10 @@
 <h1>Olá</h1>
+
+<?php
+
+echo form(array('enctype'=>true));
+	echo formText('foto',array('type'=>'file'));
+	echo formSubmit('Fazer Upload',null,true);
+echo formEnd();
+
+?>
