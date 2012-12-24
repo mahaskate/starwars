@@ -1,11 +1,6 @@
 <?php
 
-//echo $_SERVER['SCRIPT_NAME'];
-//require "../mvc/controller/components/wideImage/lib/wideImage.php";
-
-//echo dirname(__FILE__);
-
-include "../components/thumb/ThumbLib.inc.php";
+include "../mvc/controller/components/thumb/ThumbLib.inc.php";
 
 if($_POST){
 

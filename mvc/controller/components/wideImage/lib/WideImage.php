@@ -22,25 +22,6 @@
     * @package WideImage
   **/
 
-	
-/*
-	require_once 'Exception.php';
-	
-	require_once 'Image.php';
-	require_once 'TrueColorImage.php';
-	require_once 'PaletteImage.php';
-	
-	require_once 'Coordinate.php';
-	require_once 'Canvas.php';
-	require_once 'MapperFactory.php';
-	require_once 'OperationFactory.php';
-	
-	require_once 'Font/TTF.php';
-	require_once 'Font/GDF.php';
-	require_once 'Font/PS.php';
-*/
-
-/*
 	require_once WideImage::path() . 'Exception.php';
 	
 	require_once WideImage::path() . 'Image.php';
@@ -56,7 +37,6 @@
 	require_once WideImage::path() . 'Font/GDF.php';
 	require_once WideImage::path() . 'Font/PS.php';
 
-	*/
 	
 	/**
 	 * @package Exceptions
