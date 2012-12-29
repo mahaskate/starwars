@@ -1,0 +1,4 @@
+<ul class="nav nav-tabs nav-stacked">
+	<li class=""><?php echo a('Posts',array('controller'=>'posts','action'=>'adminlist')); ?></li>
+	<li class=""><?php echo a('Mensagens',array('controller'=>'mensagens','action'=>'adminlist')); ?></li>
+</ul>

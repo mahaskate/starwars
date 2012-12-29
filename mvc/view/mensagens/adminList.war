@@ -1,0 +1,27 @@
+<ul class="breadcrumb">
+  <li><?php echo a('Home',array('controller'=>'posts','action'=>'adminlist')) ?> <span class="divider">/</span></li>
+  <li class="active">Mensagens</li>
+</ul>
+
+<table id="mytable" class='tablesorter table-condensed table-bordered table-hover table striped'>
+	<thead>
+		<th>Nome/Email</th>
+		<th>Assunto</th>
+		<th>Texto</th>
+	</thead>
+	<tbody>
+		<?php if(empty($mensagens)): ?>
+			<tr>
+				<td colspan="5">Nenhuma mensagem recebida</td>
+			</tr>
+		<?php else: ?>
+			<?php foreach ($mensagens as $mensagem): ?>
+			<tr id="linha<?php echo $post['id'];?>">
+				<td class='span1'><?php echo "<b>".$mensagem['nome']."</b> - ".$mensagem['email']; ?></td>
+				<td class='span2'><?php echo $mensagem['assunto']; ?></td>
+				<td class='span3'><?php echo $mensagem['texto']; ?></td>
+			</tr>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</tbody>
+</table>

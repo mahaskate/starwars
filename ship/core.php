@@ -33,7 +33,7 @@ function pluginJs($a){
 	require "../plugins/".$a."/core.php";
 }
 
-function getValues(){
+function varsByGet(){
 	$parametros = explode("?", $_SERVER['REQUEST_URI']);
 	//Se array possuir duas posições significa que teve parametros por get passado, caso contrario passa uma variavel vazia
 	if (count($parametros)!=1) {
@@ -145,9 +145,9 @@ function scriptCore(){
 	if (!empty($pluginsJs)) {
 		foreach ($pluginsJs as $key =>$value) {
 			foreach ($value as $js){
-				$r .= "<script src='".root()."/pluginsJs/".$key."/js/".$js.".js' type='text/javascript'></script>";
+				$r .= "<script src='".root()."/garagem/js/plugins/".$key."/js/".$js.".js' type='text/javascript'></script>";
 			}
-			$r .= "<script src='".root()."/pluginsJs/".$key."/core.js' type='text/javascript'></script>";
+			$r .= "<script src='".root()."/garagem/js/plugins/".$key."/core.js' type='text/javascript'></script>";
 		}
 	}
 	return $r;
@@ -162,7 +162,7 @@ function cssCore(){
 	if (!empty($pluginsJsCss)) {
 		foreach ($pluginsJsCss as $key =>$value) {
 			foreach ($value as $css){
-				$r .= "<link rel='stylesheet' href='".root()."/pluginsJs/".$key."/css/".$css.".css' type='text/css' media='screen'>";
+				$r .= "<link rel='stylesheet' href='".root()."/garagem/js/plugins/".$key."/css/".$css.".css' type='text/css' media='screen'>";
 			}
 		}
 	}
@@ -198,7 +198,7 @@ function param($num){
 
 function element($element) {
 	global $root;
-	$r = require "../mvc/view/element/".$element.".war";
+	$r = "../mvc/view/element/".$element.".war";
 	return $r;		
 }
 

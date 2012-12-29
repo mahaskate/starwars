@@ -1,0 +1,27 @@
+<div class="row-fluid">
+	<div class="span12">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container" style="width: auto;">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="#">Project name</a>
+					<div class="nav-collapse">
+						<ul class="nav pull-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['auth_username'];?> <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li class="divider"></li>
+									<li><?php echo a('Sair',array('controller'=>'users','action'=>'logout')); ?></li>
+								</ul>
+							</li>
+						</ul>
+					</div><!-- /.nav-collapse -->
+				</div>
+			</div><!-- /navbar-inner -->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<ul class="breadcrumb">
+  <li><?php echo a('Home',array('controller'=>'posts','action'=>'adminlist')) ?> <span class="divider">/</span></li>
+  <li><?php echo a('Posts',array('controller'=>'posts','action'=>'adminlist')) ?> <span class="divider">/</span></li>
+  <li class="active">Editar Post</li>
+</ul>
+<?php
+
+echo form(array('type'=>'vertical','id'=>'validate'));
+	echo formText('title',array('placeholder'=>'Título','class'=>'span12 required','value'=>$post['title']),false);
+	echo formText('chamada',array('placeholder'=>'Chamada','class'=>'span12 required','value'=>$post['chamada']),false);
+	echo formText('body',array('placeholder'=>'Texto do post aqui...','type'=>'textarea','class'=>'span12 required','style'=>'height:300px;','value'=>$post['body']),false);
+	echo formSubmit('Salvar Post','btn-primary',true);
+echo formEnd();
+
+?>

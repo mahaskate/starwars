@@ -1,7 +1,4 @@
 <?php
-$pluginsJsCss = array('tablesorter'=>array('style'));
-$pluginsJs = array('tablesorter'=>array('tablesorter'));
-
-$posts = find('posts');
+$posts = find('posts',array('fields'=>"id,title,body,DATE_FORMAT(created,'%d/%m') AS created"));
 
 ?>

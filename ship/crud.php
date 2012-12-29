@@ -161,16 +161,23 @@ function formChoice($value,$options = array()){
 	return $r;
 }
 
-function formSubmit($value=null,$class=null,$action=false){
+function formSubmit($value=null,$options=array()){
+
+	if(!isset($options['class']))
+		$options['class'] = "";
+	if(!isset($options['actions']))
+		$options['actions'] = false;
+
+
 	if (is_null($value))
 		$value = "Enviar";
 
-	if ($action){
+	if ($options['actions']){
 		$r = "<div class='form-actions'>";
-			$r .= "<button type='submit' class='btn ".$class."'>".$value."</button>";
+			$r .= "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
 		$r .= "</div>";
 	}else{
-		$r = "<button type='submit' class='btn ".$class."'>".$value."</button>";
+		$r = "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
 	}
 	return $r;
 }
@@ -318,6 +325,289 @@ function select($select){
 }
 
 //Busca todos os dados de uma tabela especifica
+
+function totalRecords($tabela,$options=array()){
+
+	if(!isset($options['where']))
+		$options['where'] = "";
+	else
+		$options['where'] = " WHERE ".$options['where'];
+
+	$total = mysql_query("SELECT count(id) as total FROM ".$tabela.$options['where']);
+
+	$total = mysql_fetch_assoc($total);
+	$total = $total['total'];
+	return $total;
+}
+
+function pagination($tabela,$options=array()){
+	global $paginationLimit;
+	$varByGet = varsByGet();
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0 AND $varByGet['pagina'] < 99999999999999)
+			$pagina = $varByGet['pagina'];
+		else
+			$pagina = 1;
+	else
+		$pagina = 1;
+
+	$inicio = $pagina - 1;
+	$inicio = $paginationLimit * $inicio;
+
+	$options['limit'] = $inicio.",".$paginationLimit;
+
+	$result = find($tabela,$options);
+
+	return $result;
+
+}
+
+function paginatorGmail($totalReg,$options=array()){
+	global $paginationLimit;
+	$varByGet = varsByGet();
+
+	if (!isset($options['align']) OR $options['align'] == 'left') {
+		$options['align'] = 'pull-left';
+	}else{
+		$options['align'] = 'pull-right';
+	}
+
+	if (!isset($options['color']) OR $options['color'] != 'inverse'){
+		$options['color'] = '';
+		$iconwhite = '';
+	}else{
+		$options['color'] = 'btn-inverse ';
+		$iconwhite = 'icon-white';
+	}
+
+	$paginas = ceil($totalReg / $paginationLimit);
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
+			$pagina = $varByGet['pagina'];
+		else
+			$pagina = 1;
+	else
+		$pagina = 1;
+
+	//Calculos para manter o link orignal e só trocar a pagina
+	$uri = $_SERVER['REQUEST_URI'];
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		unset($varByGet['pagina']);
+
+	$total = count($varByGet);
+
+	if ($total == 0) {
+		$mais = '?pagina='.($pagina+1);
+		$menos = '?pagina='.($pagina-1);
+	}else{
+		$variaveis = '?';
+		foreach ($varByGet as $key => $value) {
+			$variaveis .= $key."=".$value."&";
+		}
+		$mais = $variaveis.'pagina='.($pagina+1);
+		$menos = $variaveis.'pagina='.($pagina-1);
+	}
+
+	//Só faz tudo se existir página
+	if($paginas > 1){
+		//Se a pagina for menos ou igual o total de paginas, caso contrario pagina inexistente
+		if ($pagina <= $paginas) {
+			echo "<div class='".$options['align']."'>";
+				echo "Página ".$pagina." - ".$paginas." de ".$totalReg."&nbsp;&nbsp;";
+				echo "<div class='btn-group pull-right'>";
+					//Ver se mostra voltar ou n
+					if ($pagina > 1) {
+						$disabled = '';
+					}else{
+						$disabled = 'disabled';
+						$menos = 'javascript:void(0)';
+					}
+					echo "<a href='".$menos."' class='btn btn-small ".$options['color'].$disabled."'><i class='icon-chevron-left ".$iconwhite."'></i></a>";
+					//ver se mostra proximo ou não
+					if ($pagina <  $paginas) {
+						$disabled = '';
+					}else{
+						$disabled = 'disabled';
+						$mais = 'javascript:void(0)';
+					}
+					echo "<a href='".$mais."' class='btn btn-small ".$options['color'].$disabled."'><i class='icon-chevron-right ".$iconwhite."'></i></a>";
+				echo "</div>";
+			echo "</div>";
+		}else{
+			echo "pagina n existe, redireciona 404 ou faz qualquer coisa";
+		}
+	}
+
+}
+
+function paginatorBlog($total,$options=array()){
+	global $paginationLimit;
+	$varByGet = varsByGet();
+
+	if (!isset($options['previous'])) {
+		$options['previous'] = 'Anterior';
+	}
+	if (!isset($options['next'])) {
+		$options['next'] = 'Próximo';
+	}
+
+	if (isset($options['alignSides']) AND $options['alignSides'] == true) {
+		$previous = 'previous';
+		$next = 'next';
+	}else{
+		$previous = '';
+		$next = '';
+	}
+
+	$paginas = ceil($total / $paginationLimit);
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
+			$pagina = $varByGet['pagina'];
+		else
+			$pagina = 1;
+	else
+		$pagina = 1;
+
+	//Calculos para manter o link orignal e só trocar a pagina
+	$uri = $_SERVER['REQUEST_URI'];
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		unset($varByGet['pagina']);
+
+	$total = count($varByGet);
+
+	if ($total == 0) {
+		$mais = '?pagina='.($pagina+1);
+		$menos = '?pagina='.($pagina-1);
+	}else{
+		$variaveis = '?';
+		foreach ($varByGet as $key => $value) {
+			$variaveis .= $key."=".$value."&";
+		}
+		$mais = $variaveis.'pagina='.($pagina+1);
+		$menos = $variaveis.'pagina='.($pagina-1);
+	}
+
+	//Só faz tudo se existir página
+	if($paginas > 1){
+		//Se a pagina for menos ou igual o total de paginas, caso contrario pagina inexistente
+		if ($pagina <= $paginas) {
+			//Ver se mostra voltar ou n
+			echo "<ul class='pager'>";
+				if ($pagina > 1) {
+					$disabled = '';
+				}else{
+					$disabled = 'disabled';
+					$menos = 'javascript:void(0)';
+				}
+				echo "<li class='".$previous." ".$disabled."'><a href='".$menos."'>".$options['previous']."</a></li>";
+				//ver se mostra proximo ou não
+				if ($pagina <  $paginas) {
+					$disabled = '';
+				}else{
+					$disabled = 'disabled';
+					$mais = 'javascript:void(0)';
+				}
+				echo "<li class='".$next." ".$disabled."'><a href='".$mais."'>".$options['next']."</a></li>";
+			echo "</ul>";
+		}else{
+			echo "pagina n existe, redireciona 404 ou faz qualquer coisa";
+		}
+	}
+
+}
+
+function paginator($total,$options=array()){
+	global $paginationLimit;
+	$varByGet = varsByGet();
+
+	if (!isset($options['align'])) {
+		$options['align'] = 'pagination-centered';
+	}elseif ($options['align'] == 'right') {
+		$options['align'] = 'pagination-right';
+	}elseif ($options['align'] == 'left') {
+		$options['align'] = 'pagination-left';
+	}
+
+	if (!isset($options['size'])) {
+		$options['size'] = '';
+	}elseif ($options['size'] == 'mini') {
+		$options['size'] = 'pagination-mini';
+	}elseif ($options['size'] == 'small') {
+		$options['size'] = 'pagination-small';
+	}elseif ($options['size'] == 'large') {
+		$options['size'] = 'pagination-large';
+	}
+
+	$paginas = ceil($total / $paginationLimit);
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
+			$pagina = $varByGet['pagina'];
+		else
+			$pagina = 1;
+	else
+		$pagina = 1;
+
+	//Calculos para manter o link orignal e só trocar a pagina
+	$uri = $_SERVER['REQUEST_URI'];
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
+		unset($varByGet['pagina']);
+
+	$total = count($varByGet);
+
+	if ($total == 0) {
+		$mais = '?pagina='.($pagina+1);
+		$menos = '?pagina='.($pagina-1);
+		$link = '?pagina=';
+	}else{
+		$variaveis = '?';
+		foreach ($varByGet as $key => $value) {
+			$variaveis .= $key."=".$value."&";
+		}
+		$mais = $variaveis.'pagina='.($pagina+1);
+		$menos = $variaveis.'pagina='.($pagina-1);
+		$link = $variaveis.'pagina=';
+	}
+
+	//Só faz tudo se existir página
+	if($paginas > 1){
+		//Se a pagina for menos ou igual o total de paginas, caso contrario pagina inexistente
+		echo "<div class='pagination ".$options['align']." ".$options['size']."'>";
+			echo "<ul>";
+				if($pagina != 1) 
+					echo "<li><a href='".$menos."' class='tt' title='Anterior'>«</a></li>"; 
+				 
+				if (($pagina-2) < 1 )
+					$anterior = 1;
+				else
+					$anterior = $pagina-2;
+				 
+				if (($pagina+2) > $paginas )
+					$posterior = $paginas;
+				else
+					$posterior = $pagina + 2;
+
+				for($i=$anterior;$i <= $posterior;$i++) {
+					if($i != $pagina) 
+						echo "<li><a href='".$link.$i."'>".$i."</a></li>";
+					else 
+						echo "<li class='active'><span>".$i."</span></li>";
+				}
+
+				if($pagina < $paginas) 
+					echo "<li><a href='".$mais."' class='tt' title='Próxima'>»</a></li>";
+			echo "</ul>";
+		echo "</div>";
+	}
+
+}
+
 function find($tabela,$options=array()){
 	$var = array();
 
