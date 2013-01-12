@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+<li><?php echo a('Mensagens',array('controller'=>'mensagens', 'action'=>'admin_list')); ?> <span class="divider">/</span></li>
+<li class="active">Adicionar</li>
+</ul>
+<?php
+	echo form(array('type'=>'vertical'));
+	echo formLegend('Mensagens');
+		echo formText('nome',array('class'=>'input-block-level'));
+		echo formText('email',array('class'=>'input-block-level'));
+		echo formText('texto',array('type'=>'textarea','style'=>'height:150px;','class'=>'input-block-level'));
+		echo formList('assunto_id', $assuntos);
+		echo formSubmit('Salvar');
+	echo formEnd();
+?>

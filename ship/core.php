@@ -33,6 +33,20 @@ function pluginJs($a){
 	require "../plugins/".$a."/core.php";
 }
 
+function getQ($campos=array()){
+	$varsByGet = varsByGet();
+	if (isset($varsByGet['q'])) {
+		$q = str_replace(' ', '%', $varsByGet['q']);
+		$arg = "";
+		foreach ($campos as $value) {
+			$arg .= $value." LIKE '%".$q."%' OR ";
+		}
+		$arg = substr($arg, 0, -4);
+		return "(".$arg.")";
+	}else
+		return "";
+}
+
 function varsByGet(){
 	$parametros = explode("?", $_SERVER['REQUEST_URI']);
 	//Se array possuir duas posições significa que teve parametros por get passado, caso contrario passa uma variavel vazia
@@ -53,6 +67,35 @@ function varsByGet(){
 		return $array;
 	}
 	
+}
+
+function redirectSelf(){
+	header('location: '.$_SERVER['REQUEST_URI']);
+}
+
+function request(){
+	$r = $_SERVER['REQUEST_METHOD'];
+	return $r;
+}
+
+function isRequest($type){
+	$type = strtoupper($type);
+	if ($_SERVER['REQUEST_METHOD'] == $type)
+		return true;
+	else
+		return false;
+}
+
+function deleteAjax($label,$question,$options,$id){
+	if (!isset($options['class']))
+		$class = ' btn-danger btn-mini';
+	else
+		$class = " ".$options['class'];
+
+	$r = "<button class='btn".$class."' onclick=\"return deleteAjax('".root()."/admin/".$options['controller']."/".$options['action']."','".$question."',".$id.");\">";
+		$r .= $label;
+	$r .= "</button>";
+	return $r;
 }
 
 function btnDelete($valor,$msg,$id,$options=array()){
@@ -246,6 +289,15 @@ function flash(){
 
 function redirect($options = array(null)){
 	global $rotas;
+
+	//Pegar rota admin
+	$explode = explode("_", $options['action']);
+	$total = count($explode);
+	if ($total == 2) {
+		header("Location: ".root()."/admin/".$options['controller']."/".$explode[1]);
+		exit();
+	}
+
 	if (count($rotas) > 0){
 		foreach ($rotas as $key => $rota) {
 			if ($rota['controller']."/".$rota['action'] == $options['controller']."/".$options['action']) {

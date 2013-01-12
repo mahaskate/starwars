@@ -89,6 +89,38 @@ if (isset($_GET['url'])) {
 		}
 	}
 
+	// Faz rota admin
+	$urlExplode = explode("/", $url);
+	$urlTotal = count($urlExplode);
+	$vars = "";
+	
+	if($urlExplode[0] == 'admin'){
+		// Se tiver mais de 1 parametro OK caso contrario 404
+		if ($urlTotal > 2) {
+			$controller = $urlExplode[1];
+			$action = 'admin_'.$urlExplode[2];
+			// Se quantidade de parametros forem maiores que dois monta array com variaveis a serem passadas
+			if ($urlTotal > 3) {
+				for ($i=3; $i < $urlTotal; $i++) { 
+					$vars[] = $urlExplode[$i];
+				}
+			}
+
+			// Redireciona
+			if (file_exists("../mvc/controller/".$controller."/".$action."Controller.php") == true){
+				require "../mvc/controller/".$controller."/".$action."Controller.php";
+				if (!isset($layout))
+					$layout = "default";
+				require "../mvc/view/layout/".$layout.".war";
+				exit();
+			}else{
+				echo "404";
+				exit();
+			}
+		}else{
+			echo "404";
+		}
+	}
 
 	// Se não casar com nenhuma rota direciona para o caminho normal
 	$urlExplode = explode("/", $url);

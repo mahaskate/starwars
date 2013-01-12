@@ -1,0 +1,44 @@
+<h3>Posts</h3>
+<hr>
+<?php echo a('Novo',array('class'=>'btn btn-block', 'controller'=>'posts', 'action'=>'admin_add')); ?>
+<br>
+<?php
+	if ($total >= $paginationLimit){
+		paginatorGmail($total,array('align'=>'right'));
+		echo "<br><br>";
+	}
+
+?>
+
+<table id="tableSorter" class="table table-bordered table-condensed table-hover table-striped tableSorter">
+	<thead>
+		<th>Title</th>
+		<th>Chamada</th>
+		<th>Body</th>
+		<th>User_id</th>
+		<th class="span2" style="text-align:center;">Ações</th>
+	</thead>
+	<tbody>
+	<?php if(!empty($posts)): ?>
+		<?php foreach ($posts as $post): ?>
+				<tr id='linha<?php echo $post['id']; ?>'>
+					<td><?php echo $post['title']; ?></td>
+					<td><?php echo $post['chamada']; ?></td>
+					<td><?php echo $post['body']; ?></td>
+					<td><?php echo $post['user_id']; ?></td>
+					<td style="text-align:center;">
+						<?php echo a("<i class='icon-eye-open'></i>",array('class'=>'btn btn-mini', 'controller'=>'posts', 'action'=>'admin_view'),$post['id']); ?>
+						<?php echo a("<i class='icon-pencil icon-white'></i>",array('class'=>'btn btn-primary btn-mini', 'controller'=>'posts', 'action'=>'admin_edit'),$post['id']); ?>
+						<?php echo deleteAjax("<i class='icon-trash icon-white'></i>",'deseja remover o post?',array('controller'=>'posts','action'=>'delete'),$post['id']);?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			<?php else: ?>
+				<tr>
+					<td colspan="5">
+						Nenhuma informação adicionada, <?php echo a('clique aqui',array('controller'=>'posts','action'=>'admin_add')); ?> para adicionar.
+					</td>
+				</tr>
+		<?php endif; ?>
+	</tbody>
+</table>

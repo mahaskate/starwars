@@ -1,0 +1,4 @@
+<p><strong>Nome</strong><br><?php echo $mensagen['nome']; ?></p>
+<p><strong>Email</strong><br><?php echo $mensagen['email']; ?></p>
+<p><strong>Texto</strong><br><?php echo $mensagen['texto']; ?></p>
+<p><strong>Assunto_id</strong><br><?php echo $mensagen['assunto_id']; ?></p>

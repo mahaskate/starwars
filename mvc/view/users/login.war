@@ -1,11 +1,14 @@
-<h3>Logar</h3>
-<hr>
-<?php
-
-echo form();
-	echo formText('username');
-	echo formText('password');
-	echo formSubmit('Entrar',null, true);
-echo formend();
-
-?>
+<div class="row-fluid">
+	<div class="span4"></div>
+	<div class="span4">
+		<?php
+			echo form(array('type'=>'vertical'));
+				echo formLegend('Logar');
+				echo formText('username',array('class'=>'input-block-level','placeholder'=>'Email'),false);
+				echo formText('password',array('class'=>'input-block-level','placeholder'=>'Senha'),false);
+				echo formSubmit('Entrar',array('class'=>'btn-primary','actions'=>true));
+			echo formEnd();
+		?>
+	</div>
+	<div class="span4"></div>
+</div>

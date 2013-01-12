@@ -1,0 +1,13 @@
+<ul class="breadcrumb">
+<li><?php echo a('Users',array('controller'=>'users', 'action'=>'admin_list')); ?> <span class="divider">/</span></li>
+<li class="active">Adicionar</li>
+</ul>
+<?php
+	echo form(array('type'=>'vertical'));
+	echo formLegend('Users');
+		echo formText('username',array('class'=>'input-block-level'));
+		echo formText('password',array('class'=>'input-block-level'));
+		echo formList('role_id', $roles);
+		echo formSubmit('Salvar');
+	echo formEnd();
+?>

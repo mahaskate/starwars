@@ -41,7 +41,7 @@ function formLegend($a){
 	return $a;
 }
 
-function formList($name,$valores = array(),$options=array('placeholder'=>'','class'=>'','caguei'=>''),$label2=true){
+function formList($name,$valores = array(),$options=array(),$label2=true){
 	if (!isset($options['class']))
 		$options['class'] = "";
 	if (!isset($options['label']))
@@ -57,16 +57,26 @@ function formList($name,$valores = array(),$options=array('placeholder'=>'','cla
 	else
 		$nameLabel = $options['label'];
 
+	global $data;
+
 	$r = "<div class='control-group'>";
 		if ($label2)
 			$r .= "<label class='control-label' for='".$name."'>".$nameLabel."</label>";
 		$r .= "<div class='controls'>";
 			$r .= "<select id='".$name."' class='".$options['class']."' style='".$options['style']."' name='".$name."'>";
+				$r .= "<option value=\"\">Selecione:</option>";
 				foreach ($valores as $key => $valor) {
+
 					if ($options['firstField'] == $key)
 						$selected = "selected";
 					else
 						$selected = "";
+
+					if ($data[$name] == $key)
+						$selected = 'selected';
+					else
+						$selected = '';
+
 					$r .= "<option value=".$key." ".$selected.">".$valor."</option>";
 				}
 			$r .= "</select>";
@@ -110,16 +120,15 @@ function formText($name,$options=array(),$label2=true){
 		$nameLabel = $options['label'];
 
 	global $data;
-	if ($_POST)
-		if($type != "file")
+
+	if(isset($options['value']))
+		$value = $options['value'];
+	else{
+		if (isset($data[$name]))
 			$value = $data[$name];
 		else
-			$value = "";
-
-	else if(isset($options['value']))
-		$value = $options['value'];
-	else
-		$value = "";
+			$value = '';
+	}
 
 	$r = "<div class='control-group'>";
 		if ($label2)
@@ -177,7 +186,7 @@ function formSubmit($value=null,$options=array()){
 			$r .= "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
 		$r .= "</div>";
 	}else{
-		$r = "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
+		$r = "<button type='submit' id='btn-submit' class='btn ".$options['class']."'>".$value."</button>";
 	}
 	return $r;
 }
@@ -225,6 +234,12 @@ function validation($tabela,$data){
 					if (!is_numeric($data[$key]))
 						return false;
 				}
+				//Valida se numero
+				if ($outro == "email") {
+					if (!isEmail($data[$key]))
+						return false;
+				}
+
 				//Valida se data
 				if ($outro == "date") {
 					if (!isDate($data[$key]))
@@ -313,6 +328,13 @@ function save($tabela, $form, $id = null){
 	return false; 
 }
 
+function isEmail($email){
+	if (filter_var($email, FILTER_VALIDATE_EMAIL))
+		return true;
+	else
+		return false;
+}
+
 function select($select){
 	$sel = mysql_query($select) or die ('Erro na tabela'.mysql_error());
 
@@ -344,13 +366,7 @@ function pagination($tabela,$options=array()){
 	global $paginationLimit;
 	$varByGet = varsByGet();
 
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0 AND $varByGet['pagina'] < 99999999999999)
-			$pagina = $varByGet['pagina'];
-		else
-			$pagina = 1;
-	else
-		$pagina = 1;
+	$pagina = getPage();
 
 	$inicio = $pagina - 1;
 	$inicio = $paginationLimit * $inicio;
@@ -383,13 +399,7 @@ function paginatorGmail($totalReg,$options=array()){
 
 	$paginas = ceil($totalReg / $paginationLimit);
 
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
-			$pagina = $varByGet['pagina'];
-		else
-			$pagina = 1;
-	else
-		$pagina = 1;
+	$pagina = getPage();
 
 	//Calculos para manter o link orignal e só trocar a pagina
 	$uri = $_SERVER['REQUEST_URI'];
@@ -437,7 +447,7 @@ function paginatorGmail($totalReg,$options=array()){
 				echo "</div>";
 			echo "</div>";
 		}else{
-			echo "pagina n existe, redireciona 404 ou faz qualquer coisa";
+			redirect(array('controller'=>'errors','action'=>'404'));
 		}
 	}
 
@@ -464,13 +474,7 @@ function paginatorBlog($total,$options=array()){
 
 	$paginas = ceil($total / $paginationLimit);
 
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
-			$pagina = $varByGet['pagina'];
-		else
-			$pagina = 1;
-	else
-		$pagina = 1;
+	$pagina = getPage();
 
 	//Calculos para manter o link orignal e só trocar a pagina
 	$uri = $_SERVER['REQUEST_URI'];
@@ -515,10 +519,27 @@ function paginatorBlog($total,$options=array()){
 				echo "<li class='".$next." ".$disabled."'><a href='".$mais."'>".$options['next']."</a></li>";
 			echo "</ul>";
 		}else{
-			echo "pagina n existe, redireciona 404 ou faz qualquer coisa";
+			redirect(array('controller'=>'errors','action'=>'404'));
 		}
 	}
 
+}
+
+function getPage(){
+	$varByGet = varsByGet();
+
+	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet)){
+		$pagina = $varByGet['pagina'];
+		
+		if (is_numeric($pagina) AND $pagina > 0 AND $pagina < 99999999999999)
+			$pagina = $varByGet['pagina'];
+		else
+			// SE digitar letra ou numero negativo
+			redirect(array('controller'=>'erros','action'=>'404'));
+	}else
+		$pagina = 1;
+
+	return $pagina;
 }
 
 function paginator($total,$options=array()){
@@ -545,13 +566,7 @@ function paginator($total,$options=array()){
 
 	$paginas = ceil($total / $paginationLimit);
 
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		if (is_numeric($varByGet['pagina']) AND $varByGet['pagina'] > 0)
-			$pagina = $varByGet['pagina'];
-		else
-			$pagina = 1;
-	else
-		$pagina = 1;
+	$pagina = getPage();
 
 	//Calculos para manter o link orignal e só trocar a pagina
 	$uri = $_SERVER['REQUEST_URI'];
@@ -577,21 +592,24 @@ function paginator($total,$options=array()){
 
 	//Só faz tudo se existir página
 	if($paginas > 1){
+		if ($pagina > $paginas) {
+			redirect(array('controller'=>'errors','action'=>'404'));
+		}
 		//Se a pagina for menos ou igual o total de paginas, caso contrario pagina inexistente
 		echo "<div class='pagination ".$options['align']." ".$options['size']."'>";
 			echo "<ul>";
 				if($pagina != 1) 
-					echo "<li><a href='".$menos."' class='tt' title='Anterior'>«</a></li>"; 
+					echo "<li><a href='".$menos."'>«</a></li>"; 
 				 
-				if (($pagina-2) < 1 )
+				if (($pagina-3) < 1 )
 					$anterior = 1;
 				else
-					$anterior = $pagina-2;
+					$anterior = $pagina-3;
 				 
-				if (($pagina+2) > $paginas )
+				if (($pagina+3) > $paginas )
 					$posterior = $paginas;
 				else
-					$posterior = $pagina + 2;
+					$posterior = $pagina + 3;
 
 				for($i=$anterior;$i <= $posterior;$i++) {
 					if($i != $pagina) 
@@ -601,7 +619,7 @@ function paginator($total,$options=array()){
 				}
 
 				if($pagina < $paginas) 
-					echo "<li><a href='".$mais."' class='tt' title='Próxima'>»</a></li>";
+					echo "<li><a href='".$mais."'>»</a></li>";
 			echo "</ul>";
 		echo "</div>";
 	}
@@ -611,16 +629,21 @@ function paginator($total,$options=array()){
 function find($tabela,$options=array()){
 	$var = array();
 
+	if(!isset($options['join']))
+		$join = '';
+	else
+		$join =" ".$options['join'];
+
 	if(!isset($options['fields']))
 		$options['fields'] = "*";
 
-	if(!isset($options['where']))
+	if(!isset($options['where']) OR $options['where'] == "")
 		$options['where'] = "";
 	else
 		$options['where'] = " WHERE ".$options['where'];
 
 	if(!isset($options['orderBy']))
-		$options['orderBy'] = "";
+		$options['orderBy'] = " ORDER BY ".$tabela.".created DESC";
 	else
 		$options['orderBy'] = " ORDER BY ".$options['orderBy'];
 
@@ -629,9 +652,11 @@ function find($tabela,$options=array()){
 	else
 		$options['limit'] = " LIMIT ".$options['limit'];
 
-//	echo "SELECT ".$options['fields']." FROM ".$tabela.$options['where'].$options['orderBy'].$options['limit'];
+	//echo "SELECT ".$options['fields']." FROM ".$tabela.$options['where'].$options['orderBy'].$options['limit'];
 
-	$sel = mysql_query("SELECT ".$options['fields']." FROM ".$tabela.$options['where'].$options['orderBy'].$options['limit']) or die ('Erro na tabela'.mysql_error());
+	$sel = mysql_query("SELECT ".$options['fields']." FROM ".$tabela.$join.$options['where'].$options['orderBy'].$options['limit']) or die ('Erro na tabela(find) '.mysql_error());
+
+	//echo "SELECT ".$options['fields']." FROM ".$tabela.$join.$options['where'].$options['orderBy'].$options['limit'];
 
 	$total = mysql_num_rows($sel);
 	for ($i=0; $i < $total; $i++) { 
