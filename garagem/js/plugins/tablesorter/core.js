@@ -1,7 +1,7 @@
 $(document).ready(function(){
-	$('#mytable').tablesorter({
+	$('#tablesorter').tablesorter({
 		headers:{
-			4:{
+			3:{
 				sorter:false
 			}
 		}

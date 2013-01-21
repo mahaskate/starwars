@@ -1,1 +1,11 @@
-.flash{position:fixed;width:500px;left:50%;margin-left:-250px;z-index:999;top:15px;display:none;}
+.flash {
+	position:fixed;
+	width:500px;
+	left:50%;
+	margin-left:-250px;
+	z-index:999;
+	top:15px;
+	display:none;
+}
+.alert-error {background: rgba(230, 50, 50, 0.4);}
+.alert-success {background: rgba(200, 200, 0, 0.4);}

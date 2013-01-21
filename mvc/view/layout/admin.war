@@ -11,10 +11,11 @@
 	<meta name="keywords" content="" />
 
 	<!-- FAVICON -->
-	<?php echo favicon('favicon');?>
-	<?php echo cssCore();?>
-	<?php echo css('bootstrap-responsive.min') ?>
-	<?php echo scriptCore();?>
+	<?php echo favicon('favicon'); ?>
+	<?php echo cssCore(); ?>
+	<?php echo css('bootstrap-responsive.min'); ?>
+	
+	<?php echo scriptCore(); ?>
 
 </head>
 <body>

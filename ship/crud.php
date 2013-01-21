@@ -27,7 +27,7 @@ function form($options=array()){
 }
 
 function formActions(){
-		$r = "<div class='form-actions'>";	
+		$r = "<div class='form-actions'>";
 		return $r;
 }
 
@@ -186,7 +186,7 @@ function formSubmit($value=null,$options=array()){
 			$r .= "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
 		$r .= "</div>";
 	}else{
-		$r = "<button type='submit' id='btn-submit' class='btn ".$options['class']."'>".$value."</button>";
+		$r = "<button type='submit' class='btn ".$options['class']."'>".$value."</button>";
 	}
 	return $r;
 }
@@ -279,7 +279,7 @@ function save($tabela, $form, $id = null){
 			// Só faz as operações se o campo pertencer a tabela
 			if(array_key_exists($campo,$model)){
 				// Faz o anti sql injection
-				$value = antiinjection($value);
+				$value = antiInjection($value);
 				// Se senha ou password faz o hash
 				if($campo == "password")
 					$value = md5($value.$salt);
@@ -381,7 +381,8 @@ function pagination($tabela,$options=array()){
 
 function paginatorGmail($totalReg,$options=array()){
 	global $paginationLimit;
-	$varByGet = varsByGet();
+
+	$varsByGet = varsByGet();
 
 	if (!isset($options['align']) OR $options['align'] == 'left') {
 		$options['align'] = 'pull-left';
@@ -401,28 +402,11 @@ function paginatorGmail($totalReg,$options=array()){
 
 	$pagina = getPage();
 
-	//Calculos para manter o link orignal e só trocar a pagina
-	$uri = $_SERVER['REQUEST_URI'];
-
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		unset($varByGet['pagina']);
-
-	$total = count($varByGet);
-
-	if ($total == 0) {
-		$mais = '?pagina='.($pagina+1);
-		$menos = '?pagina='.($pagina-1);
-	}else{
-		$variaveis = '?';
-		foreach ($varByGet as $key => $value) {
-			$variaveis .= $key."=".$value."&";
-		}
-		$mais = $variaveis.'pagina='.($pagina+1);
-		$menos = $variaveis.'pagina='.($pagina-1);
-	}
+	$mais = keepGet($varsByGet,$pagina+1);
+	$menos = keepGet($varsByGet,$pagina-1);
 
 	//Só faz tudo se existir página
-	if($paginas > 1){
+	if($paginas > 1){;
 		//Se a pagina for menos ou igual o total de paginas, caso contrario pagina inexistente
 		if ($pagina <= $paginas) {
 			echo "<div class='".$options['align']."'>";
@@ -435,6 +419,7 @@ function paginatorGmail($totalReg,$options=array()){
 						$disabled = 'disabled';
 						$menos = 'javascript:void(0)';
 					}
+
 					echo "<a href='".$menos."' class='btn btn-small ".$options['color'].$disabled."'><i class='icon-chevron-left ".$iconwhite."'></i></a>";
 					//ver se mostra proximo ou não
 					if ($pagina <  $paginas) {
@@ -476,25 +461,8 @@ function paginatorBlog($total,$options=array()){
 
 	$pagina = getPage();
 
-	//Calculos para manter o link orignal e só trocar a pagina
-	$uri = $_SERVER['REQUEST_URI'];
-
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		unset($varByGet['pagina']);
-
-	$total = count($varByGet);
-
-	if ($total == 0) {
-		$mais = '?pagina='.($pagina+1);
-		$menos = '?pagina='.($pagina-1);
-	}else{
-		$variaveis = '?';
-		foreach ($varByGet as $key => $value) {
-			$variaveis .= $key."=".$value."&";
-		}
-		$mais = $variaveis.'pagina='.($pagina+1);
-		$menos = $variaveis.'pagina='.($pagina-1);
-	}
+	$mais = keepGet($varsByGet,$pagina+1);
+	$menos = keepGet($varsByGet,$pagina-1);
 
 	//Só faz tudo se existir página
 	if($paginas > 1){
@@ -568,27 +536,8 @@ function paginator($total,$options=array()){
 
 	$pagina = getPage();
 
-	//Calculos para manter o link orignal e só trocar a pagina
-	$uri = $_SERVER['REQUEST_URI'];
-
-	if (!empty($varByGet) AND array_key_exists('pagina', $varByGet))
-		unset($varByGet['pagina']);
-
-	$total = count($varByGet);
-
-	if ($total == 0) {
-		$mais = '?pagina='.($pagina+1);
-		$menos = '?pagina='.($pagina-1);
-		$link = '?pagina=';
-	}else{
-		$variaveis = '?';
-		foreach ($varByGet as $key => $value) {
-			$variaveis .= $key."=".$value."&";
-		}
-		$mais = $variaveis.'pagina='.($pagina+1);
-		$menos = $variaveis.'pagina='.($pagina-1);
-		$link = $variaveis.'pagina=';
-	}
+	$mais = keepGet($varsByGet,$pagina+1);
+	$menos = keepGet($varsByGet,$pagina-1);
 
 	//Só faz tudo se existir página
 	if($paginas > 1){
@@ -613,7 +562,7 @@ function paginator($total,$options=array()){
 
 				for($i=$anterior;$i <= $posterior;$i++) {
 					if($i != $pagina) 
-						echo "<li><a href='".$link.$i."'>".$i."</a></li>";
+						echo "<li><a href='".keepGet($varsByGet,$i)."'>".$i."</a></li>";
 					else 
 						echo "<li class='active'><span>".$i."</span></li>";
 				}

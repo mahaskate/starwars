@@ -22,7 +22,7 @@ require "uploadFiles.php";
 require "components.php";
 //Carrega variaveis de configuração
 require "../vars/vars.php";
-require_once "bd.php";
+require "bd.php";
 
 //Se não setar titulo insere o titulo default
 if (!isset($titulo))
@@ -30,21 +30,43 @@ if (!isset($titulo))
 
 function pluginJs($a){
 	echo "<script type='text/javascript' src='".root()."/plugins/".$a."/js/".$a.".js'></script>";
-	require "../plugins/".$a."/core.php";
+	require path("/garagem/js/plugins/".$a."/core.php");
 }
 
-function getQ($campos=array()){
-	$varsByGet = varsByGet();
-	if (isset($varsByGet['q'])) {
-		$q = str_replace(' ', '%', $varsByGet['q']);
-		$arg = "";
-		foreach ($campos as $value) {
-			$arg .= $value." LIKE '%".$q."%' OR ";
-		}
-		$arg = substr($arg, 0, -4);
-		return "(".$arg.")";
-	}else
-		return "";
+function active($path=array()){
+	global $controller;
+	global $action;
+
+	if (isset($path['action'])) {
+		if ($path['controller'] == $controller AND $path['action'] == $action)
+			return 'active';
+	}else{
+		if ($path['controller'] == $controller AND $path['action'] == $action)
+			return 'active';
+	}
+	return '';
+}
+
+function getQ($campos=array(),$q){
+	$q = antiInjection($q);
+	$q = str_replace(' ', '%', $q);
+	$arg = "";
+
+	foreach ($campos as $value)
+		$arg .= $value." LIKE '%".$q."%' OR ";
+
+	$arg = substr($arg, 0, -4);
+	return "(".$arg.")";
+}
+
+function keepGet($a,$b){
+	$a['pagina'] = $b;
+	$r = "?";
+	foreach ($a as $key => $value) {
+		$r .= $key."=".$value."&";
+	}
+	$r = substr($r, 0, -1);
+	return $r;
 }
 
 function varsByGet(){
@@ -130,6 +152,19 @@ function ajaxPost($options=array()){
 	echo $r;
 }
 
+//path
+function path($a){
+	$root = $_SERVER['SERVER_NAME'];
+	$folder = $_SERVER['SCRIPT_NAME'];
+	$folder = explode("/", $folder);
+	$folder = $folder[1];
+	if ($root == "localhost" OR preg_match("/192.168/", $root)) {
+		$path = $_SERVER['DOCUMENT_ROOT']."/".$folder.$a;
+	}else{
+		$path = $_SERVER['DOCUMENT_ROOT']."/".$a;
+	}
+	return $path;
+}
 // Função de rota
 function urlFinal($urlExplode = array(),$flag=0){
 	$urlFinal = "";
@@ -181,16 +216,17 @@ function rota($rota,$parametros = array()){
 function scriptCore(){
 	global $pluginsJs;
 
-	$r = "<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>";
-	$r .= "<script src='".root()."/garagem/js/bootstrap.min.js' type='text/javascript'></script>";
-	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>";
+	//$r = "<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>\n";
+	$r = "<script src='".root()."/garagem/js/jquery.min.js'></script>\n";
+	$r .= "<script src='".root()."/garagem/js/bootstrap.min.js' type='text/javascript'></script>\n";
+	$r .= "<script src='".root()."/garagem/js/core.js' type='text/javascript'></script>\n";
 
 	if (!empty($pluginsJs)) {
 		foreach ($pluginsJs as $key =>$value) {
 			foreach ($value as $js){
-				$r .= "<script src='".root()."/garagem/js/plugins/".$key."/js/".$js.".js' type='text/javascript'></script>";
+				$r .= "<script src='".root()."/garagem/js/plugins/".$key."/js/".$js.".js' type='text/javascript'></script>\n";
 			}
-			$r .= "<script src='".root()."/garagem/js/plugins/".$key."/core.js' type='text/javascript'></script>";
+			$r .= "<script src='".root()."/garagem/js/plugins/".$key."/core.js' type='text/javascript'></script>\n";
 		}
 	}
 	return $r;
@@ -199,13 +235,13 @@ function scriptCore(){
 function cssCore(){
 	global $pluginsJsCss;
 
-	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.min.css' type='text/css' media='screen'>";
-	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>";
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/bootstrap.min.css' type='text/css' media='screen'>\n";
+	$r .= "<link rel='stylesheet' href='".root()."/garagem/css/core.css' type='text/css' media='screen'>\n";
 
 	if (!empty($pluginsJsCss)) {
 		foreach ($pluginsJsCss as $key =>$value) {
 			foreach ($value as $css){
-				$r .= "<link rel='stylesheet' href='".root()."/garagem/js/plugins/".$key."/css/".$css.".css' type='text/css' media='screen'>";
+				$r .= "<link rel='stylesheet' href='".root()."/garagem/js/plugins/".$key."/css/".$css.".css' type='text/css' media='screen'>\n";
 			}
 		}
 	}
@@ -215,7 +251,7 @@ function cssCore(){
 
 function favicon($favicon){
 	global $root;
-	$r = "<link rel='shortcut icon' href='".$root."/garagem/img/".$favicon.".ico' type='image/x-icon' />";
+	$r = "<link rel='shortcut icon' href='".root()."/garagem/img/".$favicon.".ico' type='image/x-icon' />";
 	return $r;
 }
 
@@ -227,7 +263,7 @@ function content(){
 	global $controller;
 	global $action;
 
-	$r = "../mvc/view/".$controller."/".$action.".war";
+	$r = path("/mvc/view/".$controller."/".$action.".war");
 	return $r;
 }
 
@@ -241,13 +277,13 @@ function param($num){
 
 function element($element) {
 	global $root;
-	$r = "../mvc/view/element/".$element.".war";
+	$r = path('/mvc/view/element/'.$element.'.war');
 	return $r;		
 }
 
 function css($css){
 	global $root;
-	$r = "<link rel='stylesheet' href='".$root."/garagem/css/".$css.".css' type='text/css' media='screen' charset='utf-8'>";
+	$r = "<link rel='stylesheet' href='".root()."/garagem/css/".$css.".css' type='text/css' media='screen' charset='utf-8'>\n";
 	return $r;
 }
 

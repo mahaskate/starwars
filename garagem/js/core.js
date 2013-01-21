@@ -1,9 +1,8 @@
 $(document).ready(function(){
 	//Load dos btn submit
-	$('form').submit(function(){
-		$("#btn-submit").val('aguarde...');
-		return false;
-	});
+	/*$('form').submit(function(){
+		$("button[type='submit']").html('aguarde...').attr('disabled',true);
+	});*/
 	//popover
 	$(".po").popover({trigger:'focus'});
 	$(".pob").popover({trigger:'focus',placement:'bottom'});
@@ -26,7 +25,6 @@ $(document).ready(function(){
 function deleteAjax(destino,msg,id){
 	if (confirm(msg)) {
 		$.post(destino,{id:id},function(callback){
-			alert (callback);
 			if (callback == 1) {
 				location.reload();
 			}else
