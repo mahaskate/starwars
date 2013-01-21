@@ -1,5 +1,0 @@
-<?php foreach ($posts as $post): ?>
-	<h3><?php echo a($post['title'],array('controller'=>'posts','action'=>'view'),$post['id']); ?></h3>
-	<small class='muted'><?php echo $post['created']; ?></small>
-	<hr>
-<?php endforeach ?>

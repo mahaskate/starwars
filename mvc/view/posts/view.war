@@ -1,8 +1,0 @@
-<?php if (!empty($post)): ?>
-	<h1><?php echo $post['title']; ?></h1>
-	<p class="muted"><big><?php echo $post['chamada']; ?></big></p>
-	<hr>
-	<p><?php echo $post['body']; ?></p>
-<?php else: ?>
-	<p>O post que você tentou acessar não existe.</p>
-<?php endif; ?>

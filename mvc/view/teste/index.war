@@ -1,7 +1,0 @@
-<?php
-
-$texto = "Governo do amapá mentém greve até segunda ordem";
-
-echo slug($texto);
-
-?>

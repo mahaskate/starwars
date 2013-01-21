@@ -1,4 +1,0 @@
-<p><strong>Title</strong><br><?php echo $post['title']; ?></p>
-<p><strong>Chamada</strong><br><?php echo $post['chamada']; ?></p>
-<p><strong>Body</strong><br><?php echo $post['body']; ?></p>
-<p><strong>User_id</strong><br><?php echo $post['user_id']; ?></p>

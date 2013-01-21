@@ -1,9 +1,0 @@
-<?php 
-echo form(array('id'=>'validate'));
-	echo formText('title',array('class'=>'span6 required','label'=>'Título'));
-	echo formText('chamada',array('class'=>'span6','label'=>'Chamada'));
-	echo formtext('body',array('type'=>'textarea','class'=>'span6','label'=>'Texto','style'=>'height:300px;'));
-	echo formSubmit('Salvar post','btn-primary',true);
-echo formEnd();
-
-?>
