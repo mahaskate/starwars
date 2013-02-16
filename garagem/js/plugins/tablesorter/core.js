@@ -1,9 +1,0 @@
-$(document).ready(function(){
-	$('#tablesorter').tablesorter({
-		headers:{
-			3:{
-				sorter:false
-			}
-		}
-	});
-});

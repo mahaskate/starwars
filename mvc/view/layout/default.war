@@ -21,8 +21,7 @@
 
 <?php echo flash(); ?>
 
-<?php require element('navbar-default'); ?>
-<div class="container-fluid" id="content">
+<div class="container" id="content">
 	<?php require content(); ?>
 </div>
 

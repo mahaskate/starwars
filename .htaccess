@@ -4,10 +4,10 @@ RewriteEngine on
  deny from all
 </Files>
 
-RewriteRule ^([a-z0-9\/]+)\/?$ router/router.php?url=$1
+RewriteRule ^([a-z0-9\/]+)\/?$ engine/router/router.php?url=$1
 
 
 #FIM REDIRECIONAMENTOS
 
 # ErrorDocument 404 /chocolate/404
-DirectoryIndex index.php router/router.php
+DirectoryIndex index.php engine/router/router.php

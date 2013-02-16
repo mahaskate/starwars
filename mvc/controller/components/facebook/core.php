@@ -7,9 +7,4 @@ $facebook = new Facebook(array(
   'secret' => '7a77bc1476389c95a89b0094a1fd380f',
 ));
 
-// Get User ID
-$user = $facebook->getUser();
-
-echo $user;
-
 ?>
