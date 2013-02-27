@@ -1,0 +1,8 @@
+<!-- Modal -->
+<?php echo modal(); ?>
+  <div class="modal-body">
+    <p>
+      <?php print_r($_POST) ?>
+    </p>
+  </div>
+<?php echo modalEnd(); ?>

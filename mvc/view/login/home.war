@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="span3"></div>
+	<div class="span6">
+		<?php
+			echo form(array('type'=>'vertical'));
+				echo formLegend('Login');
+				echo formtext('username',array('label'=>'Email'));
+				echo formtext('password',array('label'=>'Senha'));
+				echo formSubmit('Entrar',array('actions'=>true,'class'=>'btn-primary'));
+			echo formEnd();
+		?>
+	</div>
+	<div class="span3"></div>
+</div>

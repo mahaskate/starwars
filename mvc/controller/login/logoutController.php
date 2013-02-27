@@ -1,0 +1,4 @@
+<?php
+$layout = 'ajax';
+logout();
+?>
