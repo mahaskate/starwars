@@ -1,8 +1,8 @@
 <?php
 
 function newfolder($folder){
-	if(!file_exists(path('/garagem/'.$folder))){
-		mkdir(path('/garagem/'.$folder));
+	if(!file_exists(path('/assets/'.$folder))){
+		mkdir(path('/assets/'.$folder));
 		return true;
 	}else{
 		return false;
@@ -10,12 +10,12 @@ function newfolder($folder){
 }
 
 function copyFile($remetente,$destino,$delete=false){
-	if (!file_exists(path('/garagem'.$remetente))){
+	if (!file_exists(path('/assets'.$remetente))){
 		return false;
 	}
-	if (copy(path('/garagem'.$remetente),path('/garagem'.$destino))){
+	if (copy(path('/assets'.$remetente),path('/assets'.$destino))){
 		if ($delete){
-			if(unlink(path('/garagem'.$remetente))){
+			if(unlink(path('/assets'.$remetente))){
 				return true;
 			}else{
 				return false;
@@ -29,10 +29,10 @@ function copyFile($remetente,$destino,$delete=false){
 }
 
 function renameFile($remetente,$destino){
-	if (!file_exists(path('/garagem'.$remetente)))
+	if (!file_exists(path('/assets'.$remetente)))
 		return false;
 	else{
-		if (rename(path('/garagem'.$remetente), path("/garagem".$destino)))
+		if (rename(path('/assets'.$remetente), path("/assets".$destino)))
 			return true;
 		else
 			return false;

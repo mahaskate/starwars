@@ -4,7 +4,8 @@ RewriteEngine on
  deny from all
 </Files>
 
-RewriteRule ^([a-z0-9\/]+)\/?$ engine/router/router.php?url=$1
+# letras, numeros, -, _, barras e sem distinção de case
+RewriteRule ^([a-z,0-9,\-,_\/]+)$ engine/router/router.php?url=$1 [NC]
 
 
 #FIM REDIRECIONAMENTOS

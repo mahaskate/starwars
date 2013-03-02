@@ -13,7 +13,7 @@
 	<!-- FAVICON -->
 	<?php echo favicon('favicon');?>
 	<?php echo cssCore();?>
-	<?php echo scriptCore();?>
+	<?php echo jsCore();?>
 
 </head>
 <body>

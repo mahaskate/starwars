@@ -56,11 +56,6 @@ function setUrl($controller, $action){
 	}
 }
 
-function pluginJs($a){
-	echo "<script type='text/javascript' src='".root()."/plugins/".$a."/js/".$a.".js'></script>";
-	require path("/assets/js/plugins/".$a."/core.php");
-}
-
 function active($path=array()){
 	global $controller;
 	global $action;
@@ -117,10 +112,6 @@ function varsByGet(){
 		return $array;
 	}
 	
-}
-
-function redirectSelf(){
-	header('location: '.$_SERVER['REQUEST_URI']);
 }
 
 function request(){
@@ -218,16 +209,16 @@ function rota($rota,$parametros = array(),$vars=0){
 
 	if ($rota != '*')
 		$rota = substr($rota, 1); 
-	
+	*/
 	$rotaExplode = explode("/", $rota);
-	$rotaTotal = count($rotaExplode); */
+	$rotaTotal = count($rotaExplode); 
 
-	$rotas = array('rota'=>$rota, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'vars'=>$vars);
+	$rotas = array('rota'=>$rota,'total'=>$rotaTotal,'split'=>$rotaExplode, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'vars'=>$vars);
 	return $rotas;
 }
 
 //função insere todos os css e script
-function scriptCore(){
+function jsCore(){
 	global $pluginsJs;
 	global $jquery;
 
@@ -237,10 +228,16 @@ function scriptCore(){
 
 	if (!empty($pluginsJs)) {
 		foreach ($pluginsJs as $key =>$value) {
-			foreach ($value as $js){
-				$r .= "<script src='".root()."/assets/js/plugins/".$key."/js/".$js.".js' type='text/javascript'></script>\n";
+			foreach ($value as $a){
+				$r .= "<script src='".root()."/assets/js/plugins/".$key."/js/".$a.".js' type='text/javascript'></script>\n";
 			}
-			$r .= "<script src='".root()."/assets/js/plugins/".$key."/core.js' type='text/javascript'></script>\n";
+		}
+	}
+	if (!empty($js)) {
+		foreach ($js as $key =>$value) {
+			foreach ($value as $a){
+				$r .= "<script src='".root()."/assets/js/plugins/".$key."/js/".$a.".js' type='text/javascript'></script>\n";
+			}
 		}
 	}
 	return $r;
@@ -256,6 +253,13 @@ function cssCore(){
 		foreach ($pluginsJsCss as $key =>$value) {
 			foreach ($value as $css){
 				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/css/".$css.".css' type='text/css' media='screen'>\n";
+			}
+		}
+	}
+	if (!empty($css)) {
+		foreach ($pluginsJsCss as $key =>$value) {
+			foreach ($value as $a){
+				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/css/".$a.".css' type='text/css' media='screen'>\n";
 			}
 		}
 	}
@@ -305,8 +309,8 @@ function css($css){
 	return $r;
 }
 
-function script($script){
-	$r = "<script src='".root()."/assets/js/".$script.".js' type='text/javascript'></script>";
+function js($a){
+	$r = "<script src='".root()."/assets/js/".$a.".js' type='text/javascript'></script>";
 	return $r;
 }
 
@@ -341,7 +345,7 @@ function flash(){
 	}
 }
 
-function redirect($options = array(null)){
+function redirect($options = array()){
 	global $rotas;
 
 	//Pegar rota admin
