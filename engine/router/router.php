@@ -46,22 +46,35 @@ if(!isset($_GET['url'])){
 	}
 }
 
+$vars = array();
+
 if($casou == 0){
-	if ($urlTotal == 3 AND $urlSplit[0] == 'admin'){
+	if ($urlTotal >= 3 AND $urlSplit[0] == $admin){
 		$controller = $urlSplit[1];
 		$action = "admin_".$urlSplit[2];
-	}else if($urlTotal == 2){
+		//Carrega variaveis
+		if($totalUrl > 3){
+			for ($i=3; $i < $urlTotal; $i++) { 
+				$vars[] = $urlSplit[$i];
+			}
+		}
+	}else if($urlTotal >= 2 AND $urlSplit[0] != $admin){
 		$controller = $urlSplit[0];
 		$action = $urlSplit[1];
+		if($urlTotal > 2){
+			for ($i=2; $i < $urlTotal; $i++) { 
+				$vars[] = $urlSplit[$i];
+			}
+		}
 	}
 }
-
 if (isset($controller) AND isset($action)) {
 	if (file_exists(path("/mvc/controller/".$controller."/".$action."Controller.php"))){
 		require path("/mvc/controller/".$controller."/".$action."Controller.php");
 		if (!isset($layout))
 			$layout = "default";
 		require path("/mvc/view/layout/".$layout.".war");
+		$casou = 1;
 	}else
 		$casou = 0;
 }else{

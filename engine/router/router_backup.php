@@ -1,4 +1,5 @@
 <?php
+$time_start = microtime(true);
 //Insere core por que qualquer pagina que venha a ser abreta aqui usa o core
 require "../core.php";
 // Se variavel url existir faz os testes, caso contrario faz o include da home
@@ -30,10 +31,14 @@ if (isset($_GET['url'])) {
 				if (!isset($layout))
 					$layout = "default";
 				require "../mvc/view/layout/".$layout.".war";
+				$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 				exit();
 
 			}else{
 				echo "404";
+				$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 				exit();
 			}
 		}
@@ -79,10 +84,14 @@ if (isset($_GET['url'])) {
 					if (!isset($layout))
 						$layout = "default";
 					require "../mvc/view/layout/".$layout.".war";
+					$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 					exit();
 
 				}else{
 					echo "404";
+					$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 					exit();
 				}
 			}
@@ -143,9 +152,13 @@ if (isset($_GET['url'])) {
 			if (!isset($layout))
 				$layout = "default";
 			require path("/mvc/view/layout/".$layout.".war");
+			$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 			exit();
 		}else{
 			echo "404";
+			$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 			exit();
 		}
 	}else{
@@ -162,10 +175,14 @@ if (isset($_GET['url'])) {
 		if (!isset($layout))
 			$layout = "default";
 		require "../mvc/view/layout/".$layout.".war";
+		$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 		exit();
 
 	}else{
 		echo "Nenhuma home como padrão";
+		$time_end = microtime(true);
+echo "Tempo de execução: ".($time_end - $time_start);
 		exit();
 	}
 }

@@ -229,14 +229,14 @@ function jsCore(){
 	if (!empty($pluginsJs)) {
 		foreach ($pluginsJs as $key =>$value) {
 			foreach ($value as $a){
-				$r .= "<script src='".root()."/assets/js/plugins/".$key."/js/".$a.".js' type='text/javascript'></script>\n";
+				$r .= "<script src='".root()."/assets/js/plugins/".$key."/".$a.".js' type='text/javascript'></script>\n";
 			}
 		}
 	}
 	if (!empty($js)) {
 		foreach ($js as $key =>$value) {
 			foreach ($value as $a){
-				$r .= "<script src='".root()."/assets/js/plugins/".$key."/js/".$a.".js' type='text/javascript'></script>\n";
+				$r .= "<script src='".root()."/assets/js/plugins/".$key."/".$a.".js' type='text/javascript'></script>\n";
 			}
 		}
 	}
@@ -252,14 +252,14 @@ function cssCore(){
 	if (!empty($pluginsJsCss)) {
 		foreach ($pluginsJsCss as $key =>$value) {
 			foreach ($value as $css){
-				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/css/".$css.".css' type='text/css' media='screen'>\n";
+				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/".$css.".css' type='text/css' media='screen'>\n";
 			}
 		}
 	}
 	if (!empty($css)) {
 		foreach ($pluginsJsCss as $key =>$value) {
 			foreach ($value as $a){
-				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/css/".$a.".css' type='text/css' media='screen'>\n";
+				$r .= "<link rel='stylesheet' href='".root()."/assets/js/plugins/".$key."/".$a.".css' type='text/css' media='screen'>\n";
 			}
 		}
 	}
