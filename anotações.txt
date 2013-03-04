@@ -1,0 +1,3 @@
+na documentação o campo login está int, não seria varchar?
+não poderia abolir o login e o aluno logar com o email?
+na tabela aula o campo situação vai receber 0 ou 1 e está no tipo varchar(1), não seria melhor int?

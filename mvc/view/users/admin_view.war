@@ -1,0 +1,3 @@
+<p><strong>Username</strong><br><?php echo $user['username']; ?></p>
+<p><strong>Password</strong><br><?php echo $user['password']; ?></p>
+<p><strong>Role_id</strong><br><?php echo $user['role_id']; ?></p>
