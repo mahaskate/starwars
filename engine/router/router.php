@@ -49,7 +49,7 @@ if(!isset($_GET['url'])){
 $vars = array();
 
 if($casou == 0){
-	if ($urlTotal >= 3 AND $urlSplit[0] == $admin){
+	if ($urlTotal >= 3 AND $urlSplit[0] == $admin_prefix){
 		$controller = $urlSplit[1];
 		$action = "admin_".$urlSplit[2];
 		//Carrega variaveis
@@ -58,7 +58,7 @@ if($casou == 0){
 				$vars[] = $urlSplit[$i];
 			}
 		}
-	}else if($urlTotal >= 2 AND $urlSplit[0] != $admin){
+	}else if($urlTotal >= 2 AND $urlSplit[0] != $admin_prefix){
 		$controller = $urlSplit[0];
 		$action = $urlSplit[1];
 		if($urlTotal > 2){
@@ -68,19 +68,17 @@ if($casou == 0){
 		}
 	}
 }
-if (isset($controller) AND isset($action)) {
-	if (file_exists(path("/mvc/controller/".$controller."/".$action."Controller.php"))){
-		require path("/mvc/controller/".$controller."/".$action."Controller.php");
-		if (!isset($layout))
-			$layout = "default";
-		require path("/mvc/view/layout/".$layout.".war");
-		$casou = 1;
-	}else
-		$casou = 0;
+if (isset($controller) == false AND isset($action) == false) {
+	$controller = "";
+	$action = "";
+}
+if (file_exists(path("/mvc/controller/".$controller."/".$action."Controller.php"))){
+	$casou = 1;
 }else{
-	$casou = 0;
+	$controller = 'errors';
+	$action = '404';
 }
-
-if ($casou == 0) {
-	echo 'erro 404';
-}
+require path("/mvc/controller/".$controller."/".$action."Controller.php");
+if (!isset($layout))
+	$layout = "default";
+require path("/mvc/view/layout/".$layout.".war");

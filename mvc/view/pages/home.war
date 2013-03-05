@@ -1,8 +1,5 @@
-<script>
-$(function(){
-	$('a#teste').colorbox({height:'200px;', width: '500px', title: 'Titulo aqui'});
-});
-</script>
-<h2>Página inicial</h2>
+<?php
 
-<a href="modal" id="teste">modal</a>
+echo modal('teste','/errors/404',array('class'=>'btn','title'=>'Adicionar usuário'));
+
+?>

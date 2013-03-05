@@ -13,7 +13,7 @@ $loginRedirect = array('controller'=>'pages','action'=>'home');
 $logoutRedirect = array('controller'=>'posts','action'=>'list');
 
 //Nome da área administrativa
-$admin = 'admin';
+$admin_prefix = 'admin';
 
 //Varivaies de banco de dados
 $server_db = "localhost";

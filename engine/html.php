@@ -8,7 +8,7 @@ function a($conteudo,$options=array(),$vars=null){
 		$options['class'] = "";
 
 	if(!isset($options['id']))
-		$options['id'] = "";
+		$options['id'] = '';
 
 	if (!is_null($vars))
 		$vars = "/".$vars;
@@ -35,6 +35,24 @@ function a($conteudo,$options=array(),$vars=null){
 		$caminho = root()."/".$options['controller']."/".$options['action'].$vars;
 	
 	$r = "<a href='".$caminho."' id='".$options['id']."' class='".$options['class']."'>".$conteudo."</a>";
+	return $r;
+}
+function modal($conteudo, $link, $options = array()){
+	if (!isset($options['id']))
+		$options['id'] = 'linkModal';
+	if (!isset($options['class']))
+		$options['class'] = '';
+	if (!isset($options['width']))
+		$options['width'] = 'auto';
+	if (!isset($options['height']))
+		$options['height'] = 'auto';
+	if (!isset($options['title']))
+		$options['title'] = 'false';
+	$r = "<a href='".root().$link."' id='".$options['id']."' class='".$options['class']."'>".$conteudo."</a>\n";
+	$r .= "<script>\n";
+		$r .= "$('a#linkModal').colorbox({width:'".$options['width']."', height:'".$options['height']."', title: '".$options['title']."'});\n";
+	$r .= "</script>\n";
+
 	return $r;
 }
 //Inserir imagem
@@ -93,16 +111,4 @@ function toModal($conteudo,$options=array(),$vars=null){
 
 	return $r;
 }
-
-
-function modal(){
-	$r = "<div class='modal hide fade' id='myModal'>";
-	return $r;
-}
-
-function modalEnd(){
-	$r = "</div>";
-	return $r;
-}
-
 ?>

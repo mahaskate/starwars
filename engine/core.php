@@ -195,24 +195,8 @@ function root(){
 }
 
 function rota($rota,$parametros = array(),$vars=0){
-	// Variaveis recebem valor default
-/*	if (!isset($parametros['varsQuant']))
-			$parametros['varsQuant'] = 0;
-	if (!isset($parametros['infiniteVars']))
-			$parametros['infiniteVars'] = false;
-	if (!isset($parametros['firstVar']))
-			$parametros['firstVar'] = false;
-	if ($parametros['firstVar'] == true)
-		$parametros['varsQuant']++;
-	if ($rota == "*")
-		$parametros['firstVar'] = true;
-
-	if ($rota != '*')
-		$rota = substr($rota, 1); 
-	*/
 	$rotaExplode = explode("/", $rota);
 	$rotaTotal = count($rotaExplode); 
-
 	$rotas = array('rota'=>$rota,'total'=>$rotaTotal,'split'=>$rotaExplode, 'controller' => $parametros['controller'], 'action' => $parametros['action'], 'vars'=>$vars);
 	return $rotas;
 }
